@@ -13,6 +13,8 @@
             <div class="space-y-6">
                 {{ form_start(registrationForm) }}
                     {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.name) }}
+                    {{ form_row(registrationForm.belt) }}
                     {{ form_row(registrationForm.plainPassword, {
                         label: 'Password'
                     }) }}
