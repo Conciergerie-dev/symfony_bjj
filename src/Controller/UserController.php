@@ -3,13 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserFormType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\RegistrationFormType;
+use App\Form\UserFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -28,7 +27,8 @@ class UserController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(UserFormType::class, $user);
+        $form->remove('roles'); 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -44,7 +44,7 @@ class UserController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('app_user_index');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -64,6 +64,7 @@ class UserController extends AbstractController
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
         $form = $this->createForm(UserFormType::class, $user);
+        $form->remove('plainPassword'); 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
