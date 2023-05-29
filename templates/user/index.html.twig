@@ -21,6 +21,8 @@
                             <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Name</th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Belt</th>
                                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th>
                                 <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                                 <span class="sr-only">Action</span>
@@ -31,7 +33,9 @@
                                 {% for user in users %}
                                     <tr>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.email }}</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.roles ? user.roles|json_encode : '' }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.name }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.belt }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.roles == ["ROLE_ADMIN","ROLE_USER"] ? 'Admin' : 'User' }}</td>
                                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                             <a href="{{ path('app_user_show', {'id': user.id}) }}" class="text-red-600 hover:text-red-900">Show<span class="sr-only">, {{ user.email }}</span></a>
                                             <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="text-red-600 hover:text-red-900">Edit<span class="sr-only">, {{ user.email }}</span></a>

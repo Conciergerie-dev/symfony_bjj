@@ -15,6 +15,19 @@ class UserFormType extends AbstractType
     {
         $builder
             ->add('email')
+            ->add('name')
+            ->add('belt', ChoiceType::class, [
+                'required' => false,
+                'multiple' => false,
+                'expanded' => false,
+                'choices'  => [
+                  'White' => 'White',
+                  'Blue' => 'Blue',
+                  'Purple' => 'Purple',
+                  'Brown' => 'Brown',
+                  'Black' => 'Black',
+                ],
+            ])
             ->add('roles', ChoiceType::class, [
                 'required' => true,
                 'multiple' => false,
