@@ -23,8 +23,8 @@
         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.belt }}</dd>
       </div>
       <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-        <dt class="text-sm font-medium leading-6 text-gray-900">Roles</dt>
-        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.roles ? user.roles|json_encode : '' }}</dd>
+        <dt class="text-sm font-medium leading-6 text-gray-900">Role</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.roles == ["ROLE_ADMIN","ROLE_USER"] ? 'Admin' : 'User' }}</dd>
       </div>
     </dl>
     <div class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
