@@ -34,7 +34,7 @@
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.roles ? user.roles|json_encode : '' }}</td>
                                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                             <a href="{{ path('app_user_show', {'id': user.id}) }}" class="text-red-600 hover:text-red-900">Show<span class="sr-only">, {{ user.email }}</span></a>
-                                            <a disabled href="#" class="text-red-600 hover:text-red-900">Edit<span class="sr-only">, {{ user.email }}</span></a>
+                                            <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="text-red-600 hover:text-red-900">Edit<span class="sr-only">, {{ user.email }}</span></a>
                                         </td>
                                     </tr>
                                 {% else %}
