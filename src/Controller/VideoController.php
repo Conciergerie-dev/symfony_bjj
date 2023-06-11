@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Video;
 use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +14,14 @@ class VideoController extends AbstractController
     {
         return $this->render('video/index.html.twig', [
             'videos' => $videoRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/app/saved', name: 'saved_videos', methods: ['GET'])]
+    public function saved(VideoRepository $videoRepository): Response
+    {
+        return $this->render('video/index.html.twig', [
+            'videos' => $this->getUser()->getLiked()->toArray(),
         ]);
     }
 }

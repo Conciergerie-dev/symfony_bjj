@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -35,6 +37,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $belt = null;
+
+    #[ORM\ManyToMany(targetEntity: Video::class, inversedBy: 'likers')]
+    private Collection $liked;
+
+    public function __construct()
+    {
+        $this->liked = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -126,6 +136,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBelt(?string $belt): self
     {
         $this->belt = $belt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getLiked(): Collection
+    {
+        return $this->liked;
+    }
+
+    public function addLiked(Video $liked): self
+    {
+        if (!$this->liked->contains($liked)) {
+            $this->liked->add($liked);
+        }
+
+        return $this;
+    }
+
+    public function removeLiked(Video $liked): self
+    {
+        $this->liked->removeElement($liked);
 
         return $this;
     }
