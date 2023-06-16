@@ -23,7 +23,7 @@ class MainController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        return $this->render('main/index.html.twig');
+        return $this->render('main/index.html.twig', ['tab' => 'saved_videos',]);
     }
 
     #[Route('/app/profile', name: 'profile')]
@@ -44,13 +44,14 @@ class MainController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
             'user' => $user,
-            'create'=> false
+            'create'=> false,
+            'tab' => 'saved_videos',
         ]);
     }
 
     #[Route('/app/admin', name: 'admin')]
     public function admin(): Response
     {
-        return $this->render('main/index.html.twig');
+        return $this->render('main/index.html.twig', ['tab' => 'saved_videos',]);
     }
 }

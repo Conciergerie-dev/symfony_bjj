@@ -41,18 +41,18 @@
                     </button>
                 </div>
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                    <div class="flex flex-shrink-0 items-center">
+                    <a href="{{ path('home') }}" class="flex flex-shrink-0 items-center">
                         <img class="block h-8 w-auto lg:hidden" src="{{ asset('img/sof_logo.png')}}" alt="State of Flow's logo">
                         <img class="hidden h-8 w-auto lg:block" src="{{ asset('img/sof_logo.png')}}" alt="State of Flow's logo">
-                    </div>
+                    </a>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                     <!-- Current: "border-red-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
-                    <a href="{{ path('dashboard') }}" class="inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900">Dashboard</a>
                     {% if is_granted('IS_AUTHENTICATED') %}
-                    <a href="#" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">My classes</a>
+                    <a href="{{ path('dashboard') }}" class="{{ tab =='dashboard' ? 'inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900' :'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">Dashboard</a>
+                    <a href="{{ path('saved_videos') }}" class="{{ tab =='saved_videos' ? 'inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900' :'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">My classes</a>
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_user_index') }}" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Admin</a>
+                    <a href="{{ path('app_user_index') }}" class="{{ tab =='admin' ? 'inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900' :'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">Admin</a>
                     {% endif %}
                     </div>
                 </div>
@@ -80,15 +80,18 @@
             </div>
 
             <!-- Mobile menu, show/hide based on menu state. -->
+            {% if is_granted('IS_AUTHENTICATED') %}
             <div x-show="menuOpen" class="sm:hidden" id="mobile-menu">
                 <div class="space-y-1 pb-4 pt-2">
                 <!-- Current: "bg-red-50 border-red-500 text-red-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" -->
-                    <a href="#" class="block border-l-4 border-red-500 bg-red-50 py-2 pl-3 pr-4 text-base font-medium text-red-700">Dashboard</a>
-                    <a href="#" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Team</a>
-                    <a href="#" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Projects</a>
-                    <a href="#" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Calendar</a>
+                    <a href="{{ path('dashboard') }}" class="{{ tab =='dashboard' ? 'block border-l-4 border-red-500 bg-red-50 py-2 pl-3 pr-4 text-base font-medium text-red-700' :'block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700' }}">Dashboard</a>
+                    <a href="{{ path('saved_videos') }}" class="{{ tab =='saved_videos' ? 'block border-l-4 border-red-500 bg-red-50 py-2 pl-3 pr-4 text-base font-medium text-red-700' :'block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700' }}">My Classes</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_user_index') }}" class="{{ tab =='admin' ? 'block border-l-4 border-red-500 bg-red-50 py-2 pl-3 pr-4 text-base font-medium text-red-700' :'block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700' }}">Admin</a>
+                    {% endif %}
                 </div>
             </div>
+            {% endif %}
         </nav>
         {% block body %}{% endblock %}
     </body>

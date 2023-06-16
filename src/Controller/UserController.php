@@ -20,6 +20,7 @@ class UserController extends AbstractController
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+            'tab' => 'admin',
         ]);
     }
 
@@ -44,12 +45,13 @@ class UserController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_user_index');
+            return $this->redirectToRoute('app_user_index', ['tab' => 'admin',]);
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-            'create' => true
+            'create' => true,
+            'tab' => 'admin',
         ]);
     }
 
@@ -58,6 +60,7 @@ class UserController extends AbstractController
     {
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'tab' => 'admin',
         ]);
     }
 
@@ -77,6 +80,7 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
+            'tab' => 'admin',
         ]);
     }
 
@@ -87,6 +91,6 @@ class UserController extends AbstractController
             $userRepository->remove($user, true);
         }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_user_index', ['admin' => 'saved_videos',], Response::HTTP_SEE_OTHER);
     }
 }

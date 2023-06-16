@@ -15,6 +15,7 @@ class VideoController extends AbstractController
     {
         return $this->render('video/index.html.twig', [
             'videos' => $videoRepository->findAll(),
+            'tab' => 'dashboard',
         ]);
     }
 
@@ -24,6 +25,7 @@ class VideoController extends AbstractController
         $liked = $this->getUser()->getLiked()->toArray();
         return $this->render('video/index.html.twig', [
             'videos' => $liked,
+            'tab' => 'saved_videos',
         ]);
     }
 
