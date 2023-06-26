@@ -46,14 +46,15 @@
                         <img class="hidden h-8 w-auto lg:block" src="{{ asset('img/sof_logo.png')}}" alt="State of Flow's logo">
                     </a>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                    <!-- Current: "border-red-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
-                    {% if is_granted('IS_AUTHENTICATED') %}
-                    <a href="{{ path('dashboard') }}" class="{{ tab =='dashboard' ? 'inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900' :'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">Dashboard</a>
-                    <a href="{{ path('saved_videos') }}" class="{{ tab =='saved_videos' ? 'inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900' :'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">My classes</a>
-                    {% endif %}
-                    {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_user_index') }}" class="{{ tab =='admin' ? 'inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900' :'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">Admin</a>
-                    {% endif %}
+                        <!-- Current: "border-red-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
+                        {% if is_granted('IS_AUTHENTICATED') %}
+                        <a href="{{ path('dashboard') }}" class="{{ tab =='dashboard' ? 'inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900' :'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">Dashboard</a>
+                        <a href="{{ path('saved_videos') }}" class="{{ tab =='saved_videos' ? 'inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900' :'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">My classes</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_user_index') }}" class="{{ tab =='admin' ? 'inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900' :'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">Admin</a>
+                        <a href="{{ path('add_video') }}" class="{{ tab =='admin' ? 'inline-flex items-center border-b-2 border-red-500 px-1 pt-1 text-sm font-medium text-gray-900' :'inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">Add Video</a>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
