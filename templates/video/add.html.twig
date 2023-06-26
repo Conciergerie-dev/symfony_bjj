@@ -7,7 +7,35 @@
         {{ form_start(form) }}
         {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
         {{ form_row(form.description, {'attr': {'class': 'form-control'}}) }}
-         {{ form_row(form.thumbnail, {'attr': {'class': 'form-control'}}) }}
+        {{ form_row(form.thumbnail, {'attr': {'class': 'form-control'}}) }}
         {{ form_end(form) }}
+         <div class="button-container">
+            <button class="btn btn-primary">To send</button>
+            <button class="btn btn-secondary">Cancel</button>
+        </div>
     </div>
+
+    <style>
+         .page-title {
+            text-align: center; 
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+
+        }
+    </style>
 {% endblock %}
