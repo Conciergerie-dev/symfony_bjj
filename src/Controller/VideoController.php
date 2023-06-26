@@ -33,6 +33,7 @@ class VideoController extends AbstractController
             ->add('thumbnail', TextType::class)
             ->getForm();
 
+            
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
