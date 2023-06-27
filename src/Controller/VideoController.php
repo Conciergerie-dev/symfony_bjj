@@ -27,7 +27,6 @@ class VideoController extends AbstractController
     {
         return $this->render('video/index.html.twig', [
             'videos' => $videoRepository->findAll(),
-            'tab' => 'dashboard|add_video',
         ]);
     }
     // Adding videos - 'thumbnail/video'
@@ -140,7 +139,6 @@ class VideoController extends AbstractController
         }
         return $this->render('video/add.html.twig',[
             'form' => $form->createView(),
-            'tab' => 'add_video',
         ]);
     }
     // Displaying video
@@ -149,15 +147,15 @@ class VideoController extends AbstractController
     {
         return $this->render('video/show.html.twig', [
             'video' => $video,
-            'tab' => 'admin',
         ]);
     }
 
     #[Route('/app/saved', name: 'saved_videos', methods: ['GET'])]
-    public function showSavedVideos(VideoRepository $videoRepository): Response
+    public function showSavedVideos(): Response
     {
-        return $this->render('video/show.html.twig', [
-            'videos' => $videos,
+        $liked = $this->getUser()->getLiked()->toArray();
+        return $this->render('video/index.html.twig', [
+            'videos' => $liked,
         ]);
     }
 }
