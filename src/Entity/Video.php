@@ -28,6 +28,9 @@ class Video
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'liked')]
     private Collection $likers;
 
+    #[ORM\Column(length: 255)]
+    private ?string $video = null;
+
     public function __construct()
     {
         $this->likers = new ArrayCollection();
@@ -97,6 +100,18 @@ class Video
         if ($this->likers->removeElement($liker)) {
             $liker->removeLiked($this);
         }
+
+        return $this;
+    }
+
+    public function getVideo(): ?string
+    {
+        return $this->video;
+    }
+
+    public function setVideo(string $video): self
+    {
+        $this->video = $video;
 
         return $this;
     }
