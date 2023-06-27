@@ -28,6 +28,9 @@ class Video
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'liked')]
     private Collection $likers;
 
+    #[ORM\Column(length: 255)]
+    private ?string $video = null;
+
     public function __construct()
     {
         $this->likers = new ArrayCollection();
@@ -100,4 +103,24 @@ class Video
 
         return $this;
     }
+
+    public function getVideo(): ?string
+    {
+        return $this->video;
+    }
+
+    public function setVideo(string $video): self
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+    public function getVideoUrl(): ?string
+{
+    $videoDirectory = 'videos/';
+    $videoUrl = $videoDirectory . $this->getVideo();
+
+    return $videoUrl;
+}
+
 }
