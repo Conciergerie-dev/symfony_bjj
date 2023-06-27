@@ -17,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class VideoController extends AbstractController
 {
@@ -105,33 +106,31 @@ class VideoController extends AbstractController
                 // ça viens du set de ma entity(video.php)
                 $video->setThumbnail($newFilename);
             }
-            // $videoFile = $form->get('video')->getData();
-            $video->setVideo('123');
+            $videoFile = $form->get('video')->getData();
             // Check if a file was uploaded
-            // if ($videoFile) {
-                // // Generate a unique filename
-                // $originalFilename = pathinfo($videoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // // this is needed to safely include the file name as part of the URL
-                // $safeFilename = $slugger->slug($originalFilename);
-                // $newFilename = $safeFilename.'-'.uniqid().'.'.$videoFile->guessExtension();
-                
-                // // Move the file to the destination directory
-                // try {
-                //     $videoFile->move(
-                //         $this->getParameter('video_directory'),
-                //         $newFilename
-                //     );
-                // } catch (FileException $e) {
-                //     // ... handle exception if something happens during file upload
-                // }
-                // // updates the 'brochureFilename' property to store the PDF file name
-                // // instead of its contents
-                // // ça viens du set de ma entity(video.php)
-                // $video->setVideo($newFilename);
+            if ($videoFile) {
+                // Generate a unique filename
+                $originalFilename = pathinfo($videoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$videoFile->guessExtension();
+                // Move the file to the destination directory
+                try {
+                    $videoFile->move(
+                        $this->getParameter('video_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                // ça viens du set de ma entity(video.php)
+                $video->setVideo($newFilename);
 
-                // // Save the file name to the database or do any other necessary action              
-                // // Logic to handle the case where no file was uploaded
-            // }
+                // Save the file name to the database or do any other necessary action              
+                // Logic to handle the case where no file was uploaded
+            }
             $entityManager = $doctrine->getManager();
             $entityManager -> persist($video);
             $entityManager -> flush();
