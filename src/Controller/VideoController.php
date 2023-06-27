@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class VideoController extends AbstractController
 {
@@ -77,7 +78,7 @@ class VideoController extends AbstractController
                     ]),
                 ],
             ])
-            ->add('save', SubmitType::class, ['label' => 'add_video'])
+            ->add('save', SubmitType::class, ['label' => 'Add Video'])
             ->getForm();
                 
         $form->handleRequest($request);
@@ -142,14 +143,21 @@ class VideoController extends AbstractController
             'tab' => 'add_video',
         ]);
     }
+    // Displaying video
+    #[Route('/app/video/{id}', name: 'app_video_show', methods: ['GET'])]
+    public function show(Video $video): Response
+    {
+        return $this->render('video/show.html.twig', [
+            'video' => $video,
+            'tab' => 'admin',
+        ]);
+    }
 
     #[Route('/app/saved', name: 'saved_videos', methods: ['GET'])]
-    public function saved(): Response
+    public function showSavedVideos(VideoRepository $videoRepository): Response
     {
-        $liked = $this->getUser()->getLiked()->toArray();
-        return $this->render('video/index.html.twig', [
-            'videos' => $liked,
-            'tab' => 'saved_videos',
+        return $this->render('video/videos.html.twig', [
+            'videos' => $videos,
         ]);
     }
 

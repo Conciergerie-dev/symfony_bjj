@@ -115,4 +115,12 @@ class Video
 
         return $this;
     }
+    public function getVideoUrl(): ?string
+{
+    $videoDirectory = 'videos/';
+    $videoUrl = $videoDirectory . $this->getVideo();
+
+    return $videoUrl;
+}
+
 }

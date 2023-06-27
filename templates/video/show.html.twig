@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>{{ video.name }}</h1>
+    <p>{{ video.description }}</p>
+    <div>
+        <video controls>
+            <source src= "{{ asset('uploads/videos/' ~ video.video) }}">   
+        </video>
+    </div>        
+{% endblock %}
