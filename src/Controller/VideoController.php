@@ -5,6 +5,7 @@ namespace App\Controller;
 //2 - Après je passe en paramètre de ces méthodes
 //3 - Après je peux me servir dans me méthodes
 use App\Entity\Video;
+use App\Entity\User;
 use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -135,7 +136,7 @@ class VideoController extends AbstractController
             $entityManager -> persist($video);
             $entityManager -> flush();
 
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('adm_videos_list');
         }
         return $this->render('video/add.html.twig',[
             'form' => $form->createView(),
@@ -158,4 +159,25 @@ class VideoController extends AbstractController
             'videos' => $liked,
         ]);
     }
+    
+    #[Route('/app/admin/videos', name: 'adm_videos_list', methods: ['GET'])]
+    public function showAdmVideos(VideoRepository $videoRepository): Response
+    {   
+        return $this->render('video/video_dashboard.html.twig', [
+            'videos' => $videoRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/app/admin/videos/{id}', name: 'app_video_delete', methods: ['POST'])]
+    public function delete(Request $request, Video $video, User $user, VideoRepository $videoRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $videoRepository->remove($video, true);
+        }else{
+            dd('test01');
+        }
+
+        return $this->redirectToRoute('adm_videos_list', Response::HTTP_SEE_OTHER);
+    }
+    
 }
