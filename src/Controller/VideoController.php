@@ -5,6 +5,7 @@ namespace App\Controller;
 //2 - Après je passe en paramètre de ces méthodes
 //3 - Après je peux me servir dans me méthodes
 use App\Entity\Video;
+use App\Entity\User;
 use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,11 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Form\VideoFormType;
+use App\Service\FileUploader;
+use Symfony\Component\Filesystem\Filesystem;
+
+
 
 class VideoController extends AbstractController
 {
@@ -29,57 +35,14 @@ class VideoController extends AbstractController
             'videos' => $videoRepository->findAll(),
         ]);
     }
+
     // Adding videos - 'thumbnail/video'
     #[Route('/app/add-video', name: 'add_video', methods: ['GET', 'POST'])]
-    public function addVideo(Request $request, PersistenceManagerRegistry $doctrine, SluggerInterface $slugger ): Response
+    public function addVideo(Request $request, PersistenceManagerRegistry $doctrine, SluggerInterface $slugger, FileUploader $fileUploader ): Response
     {
         $video = new Video(); //new instance
-        
-        $form = $this->createFormBuilder($video)
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class)
-            ->add('thumbnail', FileType::class, [  //C'est pour upload img thumbnail
-                'label' => 'Add New Image',
-
-                // unmapped means that this field is not associated to any entity property
-                'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
-                'required' => false,
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
-                'constraints' => [
-                    new File([
-                        'maxSize' => '10240k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png'
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid PNG or JPEG',
-                    ])
-                ],
-            ])
-            ->add('video', FileType::class, [
-                'label' => 'Add New Video',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '50M',
-                        'mimeTypes' => [
-                            'video/mp4',
-                            'video/mpeg',
-                            'video/quicktime',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid video (MP4, MPEG, or QuickTime)',
-                    ]),
-                ],
-            ])
-            ->add('save', SubmitType::class, ['label' => 'Add Video'])
-            ->getForm();
-                
+        $form = $this->createForm(VideoFormType::class, $video); //j'ai appelé le form que vien du VideoFormType
+               
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $thumbnailFile = $form->get('thumbnail')->getData();
@@ -87,20 +50,8 @@ class VideoController extends AbstractController
             // this condition is needed because the 'brochure' field is not required
             // so the PDF file must be processed only when a file is uploaded
             if ($thumbnailFile) {
-                $originalFilename = pathinfo($thumbnailFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$thumbnailFile->guessExtension();
+                $newFilename = $fileUploader->upload($thumbnailFile);
 
-                // Move the file to the directory where brochures are stored
-                try {
-                    $thumbnailFile->move(
-                        $this->getParameter('thumbnail_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
                 // ça viens du set de ma entity(video.php)
@@ -135,12 +86,13 @@ class VideoController extends AbstractController
             $entityManager -> persist($video);
             $entityManager -> flush();
 
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('adm_videos_list');
         }
         return $this->render('video/add.html.twig',[
             'form' => $form->createView(),
         ]);
     }
+
     // Displaying video
     #[Route('/app/video/{id}', name: 'app_video_show', methods: ['GET'])]
     public function show(Video $video): Response
@@ -153,9 +105,55 @@ class VideoController extends AbstractController
     #[Route('/app/saved', name: 'saved_videos', methods: ['GET'])]
     public function showSavedVideos(): Response
     {
-        $liked = $this->getUser()->getLiked()->toArray();
+        // $liked = $this->getUser()->getLiked()->toArray();/////////////////////////////////////////
         return $this->render('video/index.html.twig', [
-            'videos' => $liked,
+            // 'videos' => $liked,//////////////////////////////////////////
         ]);
     }
+    
+    #[Route('/app/admin/videos', name: 'adm_videos_list', methods: ['GET'])]
+    public function showAdmVideos(VideoRepository $videoRepository): Response
+    {   
+        return $this->render('video/video_dashboard.html.twig', [
+            'videos' => $videoRepository->findAll(),
+        ]);
+    }
+
+    // Editing a video
+    #[Route('/app/admin/videos/{id}', name: 'app_video_edit', methods: ['POST', 'GET'])]
+    public function edit(Request $request, Video $video, VideoRepository $videoRepository, 
+    FileUploader $fileUploader, FileSystem $filesystem): Response
+    {
+    $form = $this->createForm(VideoFormType::class, $video);
+    $form->remove('video'); 
+    $form->handleRequest($request);
+
+    // Check that the form has been submitted and is valid
+    if ($form->isSubmitted() && $form->isValid()) {   
+        $thumbnailFile = $form->get('thumbnail')->getData();
+
+        // this condition is needed because the 'brochure' field is not required
+        // so the PDF file must be processed only when a file is uploaded
+        if ($thumbnailFile) {
+            $newFilename = $fileUploader->upload($thumbnailFile);
+            $filesystem->remove($this->getParameter('thumbnail_directory').'/'.$video->getThumbnail());
+
+            // updates the 'brochureFilename' property to store the PDF file name
+            // instead of its contents
+            // ça viens du set de ma entity(video.php)
+            $video->setThumbnail($newFilename);
+        }   
+        // Save changes to the video
+        $videoRepository->save($video, true);
+
+        // Redirects to video list page
+        return $this->redirectToRoute('app_video_show', ['id' => $video->getId()], Response::HTTP_SEE_OTHER);
+    }
+        //Render the video editing form
+        return $this->render('video/edit.html.twig', [
+            'form' => $form->createView(),
+            'video' => $video
+        ]);
+    }   
 }
+
