@@ -21,6 +21,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Form\VideoFormType;
+use App\Service\FileUploader;
+use Symfony\Component\Filesystem\Filesystem;
+
 
 
 class VideoController extends AbstractController
@@ -35,7 +38,7 @@ class VideoController extends AbstractController
 
     // Adding videos - 'thumbnail/video'
     #[Route('/app/add-video', name: 'add_video', methods: ['GET', 'POST'])]
-    public function addVideo(Request $request, PersistenceManagerRegistry $doctrine, SluggerInterface $slugger ): Response
+    public function addVideo(Request $request, PersistenceManagerRegistry $doctrine, SluggerInterface $slugger, FileUploader $fileUploader ): Response
     {
         $video = new Video(); //new instance
         $form = $this->createForm(VideoFormType::class, $video); //j'ai appelé le form que vien du VideoFormType
@@ -47,20 +50,8 @@ class VideoController extends AbstractController
             // this condition is needed because the 'brochure' field is not required
             // so the PDF file must be processed only when a file is uploaded
             if ($thumbnailFile) {
-                $originalFilename = pathinfo($thumbnailFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$thumbnailFile->guessExtension();
+                $newFilename = $fileUploader->upload($thumbnailFile);
 
-                // Move the file to the directory where brochures are stored
-                try {
-                    $thumbnailFile->move(
-                        $this->getParameter('thumbnail_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
                 // ça viens du set de ma entity(video.php)
@@ -114,9 +105,9 @@ class VideoController extends AbstractController
     #[Route('/app/saved', name: 'saved_videos', methods: ['GET'])]
     public function showSavedVideos(): Response
     {
-        $liked = $this->getUser()->getLiked()->toArray();
+        // $liked = $this->getUser()->getLiked()->toArray();/////////////////////////////////////////
         return $this->render('video/index.html.twig', [
-            'videos' => $liked,
+            // 'videos' => $liked,//////////////////////////////////////////
         ]);
     }
     
@@ -130,14 +121,28 @@ class VideoController extends AbstractController
 
     // Editing a video
     #[Route('/app/admin/videos/{id}', name: 'app_video_edit', methods: ['POST', 'GET'])]
-    public function edit(Request $request, Video $video, VideoRepository $videoRepository): Response
-    {   
+    public function edit(Request $request, Video $video, VideoRepository $videoRepository, 
+    FileUploader $fileUploader, FileSystem $filesystem): Response
+    {
     $form = $this->createForm(VideoFormType::class, $video);
+    $form->remove('video'); 
     $form->handleRequest($request);
 
     // Check that the form has been submitted and is valid
     if ($form->isSubmitted() && $form->isValid()) {   
-           
+        $thumbnailFile = $form->get('thumbnail')->getData();
+
+        // this condition is needed because the 'brochure' field is not required
+        // so the PDF file must be processed only when a file is uploaded
+        if ($thumbnailFile) {
+            $newFilename = $fileUploader->upload($thumbnailFile);
+            $filesystem->remove($this->getParameter('thumbnail_directory').'/'.$video->getThumbnail());
+
+            // updates the 'brochureFilename' property to store the PDF file name
+            // instead of its contents
+            // ça viens du set de ma entity(video.php)
+            $video->setThumbnail($newFilename);
+        }   
         // Save changes to the video
         $videoRepository->save($video, true);
 
@@ -148,7 +153,7 @@ class VideoController extends AbstractController
         return $this->render('video/edit.html.twig', [
             'form' => $form->createView(),
             'video' => $video
-        ]);        
-    }
+        ]);
+    }   
 }
 
