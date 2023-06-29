@@ -20,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Form\VideoFormType;
+
 
 class VideoController extends AbstractController
 {
@@ -35,52 +37,8 @@ class VideoController extends AbstractController
     public function addVideo(Request $request, PersistenceManagerRegistry $doctrine, SluggerInterface $slugger ): Response
     {
         $video = new Video(); //new instance
-        
-        $form = $this->createFormBuilder($video)
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class)
-            ->add('thumbnail', FileType::class, [  //C'est pour upload img thumbnail
-                'label' => 'Add New Image',
-
-                // unmapped means that this field is not associated to any entity property
-                'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
-                'required' => false,
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
-                'constraints' => [
-                    new File([
-                        'maxSize' => '10240k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png'
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid PNG or JPEG',
-                    ])
-                ],
-            ])
-            ->add('video', FileType::class, [
-                'label' => 'Add New Video',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '50M',
-                        'mimeTypes' => [
-                            'video/mp4',
-                            'video/mpeg',
-                            'video/quicktime',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid video (MP4, MPEG, or QuickTime)',
-                    ]),
-                ],
-            ])
-            ->add('save', SubmitType::class, ['label' => 'Add Video'])
-            ->getForm();
-                
+        $form = $this->createForm(VideoFormType::class, $video); //j'ai appelé le form que vien du VideoFormType
+               
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $thumbnailFile = $form->get('thumbnail')->getData();
@@ -173,11 +131,34 @@ class VideoController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $videoRepository->remove($video, true);
-        }else{
-            dd('test01');
         }
 
         return $this->redirectToRoute('adm_videos_list', Response::HTTP_SEE_OTHER);
     }
-    
+
+    #[Route('/app/admin/videos/{id}', name: 'app_video_edit', methods: ['POST', 'GET'])]
+    public function edit(Request $request, Video $video, VideoRepository $videoRepository): Response
+    {   
+        $form = $this->createForm(VideoFormType::class, $video);
+        $form->handleRequest($request);
+
+        // Check that the form has been submitted and is valid
+        if ($form->isSubmitted() && $form->isValid()) {
+            $video->setName($request->request->get('name'));
+            $video->setDescription($request->request->get('description'));
+            
+            // Save changes to the video
+            $videoRepository->save($video, true);
+
+            // Redirects to video list page
+            return $this->redirectToRoute('app_video_show', [], Response::HTTP_SEE_OTHER);
+        }
+       
+        //Render the video editing form
+        return $this->render('video/edit.html.twig', [
+            'form' => $form->createView(),
+            'video' => $video
+        ]);
+        
+    }
 }
