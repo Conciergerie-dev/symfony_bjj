@@ -11,15 +11,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Form\VideoFormType;
 use App\Service\FileUploader;
 use Symfony\Component\Filesystem\Filesystem;
@@ -37,7 +31,7 @@ class VideoController extends AbstractController
     }
 
     // Adding videos - 'thumbnail/video'
-    #[Route('/app/add-video', name: 'add_video', methods: ['GET', 'POST'])]
+    #[Route('/app/admin/videos/new', name: 'add_video', methods: ['GET', 'POST'])]
     public function addVideo(Request $request, PersistenceManagerRegistry $doctrine, SluggerInterface $slugger, FileUploader $fileUploader ): Response
     {
         $video = new Video(); //new instance
@@ -86,7 +80,7 @@ class VideoController extends AbstractController
             $entityManager -> persist($video);
             $entityManager -> flush();
 
-            return $this->redirectToRoute('adm_videos_list');
+            return $this->redirectToRoute('app_video_index');
         }
         return $this->render('video/add.html.twig',[
             'form' => $form->createView(),
@@ -94,7 +88,7 @@ class VideoController extends AbstractController
     }
 
     // Displaying video
-    #[Route('/app/video/{id}', name: 'app_video_show', methods: ['GET'])]
+    #[Route('/app/videos/{id}', name: 'app_video_show', methods: ['GET'])]
     public function show(Video $video): Response
     {
         return $this->render('video/show.html.twig', [
@@ -105,13 +99,13 @@ class VideoController extends AbstractController
     #[Route('/app/saved', name: 'saved_videos', methods: ['GET'])]
     public function showSavedVideos(): Response
     {
-        // $liked = $this->getUser()->getLiked()->toArray();/////////////////////////////////////////
+        $liked = $this->getUser()->getLiked()->toArray();/////////////////////////////////////////
         return $this->render('video/index.html.twig', [
-            // 'videos' => $liked,//////////////////////////////////////////
+            'videos' => $liked,//////////////////////////////////////////
         ]);
     }
     
-    #[Route('/app/admin/videos', name: 'adm_videos_list', methods: ['GET'])]
+    #[Route('/app/admin/videos', name: 'app_video_index', methods: ['GET'])]
     public function showAdmVideos(VideoRepository $videoRepository): Response
     {   
         return $this->render('video/video_dashboard.html.twig', [
@@ -120,7 +114,7 @@ class VideoController extends AbstractController
     }
 
     // Editing a video
-    #[Route('/app/admin/videos/{id}', name: 'app_video_edit', methods: ['POST', 'GET'])]
+    #[Route('/app/admin/videos/{id}/edit', name: 'app_video_edit', methods: ['POST', 'GET'])]
     public function edit(Request $request, Video $video, VideoRepository $videoRepository, 
     FileUploader $fileUploader, FileSystem $filesystem): Response
     {
