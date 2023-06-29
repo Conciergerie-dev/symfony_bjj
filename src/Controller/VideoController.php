@@ -99,9 +99,9 @@ class VideoController extends AbstractController
     #[Route('/app/saved', name: 'saved_videos', methods: ['GET'])]
     public function showSavedVideos(): Response
     {
-        $liked = $this->getUser()->getLiked()->toArray();/////////////////////////////////////////
+        $liked = $this->getUser()->getLiked()->toArray();
         return $this->render('video/index.html.twig', [
-            'videos' => $liked,//////////////////////////////////////////
+            'videos' => $liked,
         ]);
     }
     
