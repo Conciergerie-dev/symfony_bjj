@@ -32,6 +32,7 @@ class VideoController extends AbstractController
             'videos' => $videoRepository->findAll(),
         ]);
     }
+
     // Adding videos - 'thumbnail/video'
     #[Route('/app/add-video', name: 'add_video', methods: ['GET', 'POST'])]
     public function addVideo(Request $request, PersistenceManagerRegistry $doctrine, SluggerInterface $slugger ): Response
@@ -100,6 +101,7 @@ class VideoController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     // Displaying video
     #[Route('/app/video/{id}', name: 'app_video_show', methods: ['GET'])]
     public function show(Video $video): Response
@@ -126,39 +128,27 @@ class VideoController extends AbstractController
         ]);
     }
 
-    #[Route('/app/admin/videos/{id}', name: 'app_video_delete', methods: ['POST'])]
-    public function delete(Request $request, Video $video, User $user, VideoRepository $videoRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $videoRepository->remove($video, true);
-        }
-
-        return $this->redirectToRoute('adm_videos_list', Response::HTTP_SEE_OTHER);
-    }
-
+    // Editing a video
     #[Route('/app/admin/videos/{id}', name: 'app_video_edit', methods: ['POST', 'GET'])]
     public function edit(Request $request, Video $video, VideoRepository $videoRepository): Response
     {   
-        $form = $this->createForm(VideoFormType::class, $video);
-        $form->handleRequest($request);
+    $form = $this->createForm(VideoFormType::class, $video);
+    $form->handleRequest($request);
 
-        // Check that the form has been submitted and is valid
-        if ($form->isSubmitted() && $form->isValid()) {
-            $video->setName($request->request->get('name'));
-            $video->setDescription($request->request->get('description'));
-            
-            // Save changes to the video
-            $videoRepository->save($video, true);
+    // Check that the form has been submitted and is valid
+    if ($form->isSubmitted() && $form->isValid()) {   
+           
+        // Save changes to the video
+        $videoRepository->save($video, true);
 
-            // Redirects to video list page
-            return $this->redirectToRoute('app_video_show', [], Response::HTTP_SEE_OTHER);
-        }
-       
+        // Redirects to video list page
+        return $this->redirectToRoute('app_video_show', ['id' => $video->getId()], Response::HTTP_SEE_OTHER);
+    }
         //Render the video editing form
         return $this->render('video/edit.html.twig', [
             'form' => $form->createView(),
             'video' => $video
-        ]);
-        
+        ]);        
     }
 }
+
