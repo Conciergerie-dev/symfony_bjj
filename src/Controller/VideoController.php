@@ -18,8 +18,6 @@ use App\Form\VideoFormType;
 use App\Service\FileUploader;
 use Symfony\Component\Filesystem\Filesystem;
 
-
-
 class VideoController extends AbstractController
 {
     #[Route('/app', name: 'dashboard', methods: ['GET'])]
@@ -76,6 +74,8 @@ class VideoController extends AbstractController
                 // Save the file name to the database or do any other necessary action              
                 // Logic to handle the case where no file was uploaded
             }
+            $time = date('d-m-Y');
+            $video->setDate(new \DateTime($time));
             $entityManager = $doctrine->getManager();
             $entityManager -> persist($video);
             $entityManager -> flush();
@@ -119,7 +119,7 @@ class VideoController extends AbstractController
     FileUploader $fileUploader, FileSystem $filesystem): Response
     {
     $form = $this->createForm(VideoFormType::class, $video);
-    $form->remove('video'); 
+    $form->remove('video');
     $form->handleRequest($request);
 
     // Check that the form has been submitted and is valid
