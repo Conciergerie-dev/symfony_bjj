@@ -31,6 +31,15 @@ class Video
     #[ORM\Column(length: 255)]
     private ?string $video = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $base_position = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $ending_position = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
+
     public function __construct()
     {
         $this->likers = new ArrayCollection();
@@ -122,5 +131,41 @@ class Video
 
     return $videoUrl;
 }
+
+    public function getBasePosition(): ?string
+    {
+        return $this->base_position;
+    }
+
+    public function setBasePosition(string $base_position): self
+    {
+        $this->base_position = $base_position;
+
+        return $this;
+    }
+
+    public function getEndingPosition(): ?string
+    {
+        return $this->ending_position;
+    }
+
+    public function setEndingPosition(string $ending_position): self
+    {
+        $this->ending_position = $ending_position;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
 
 }
