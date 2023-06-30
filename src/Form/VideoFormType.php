@@ -57,7 +57,7 @@ class VideoFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('save', SubmitType::class, ['label' => 'Add Video'])
+            // ->add('save', SubmitType::class, ['label' => 'Add Video'])
         ;
     }
 
