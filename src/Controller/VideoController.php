@@ -99,9 +99,9 @@ class VideoController extends AbstractController
     #[Route('/app/saved', name: 'saved_videos', methods: ['GET'])]
     public function showSavedVideos(): Response
     {
-        $liked = $this->getUser()->getLiked()->toArray();
+        // $liked = $this->getUser()->getLiked()->toArray();
         return $this->render('video/index.html.twig', [
-            'videos' => $liked,
+            // 'videos' => $liked,
         ]);
     }
     
@@ -141,13 +141,43 @@ class VideoController extends AbstractController
         $videoRepository->save($video, true);
 
         // Redirects to video list page
-        return $this->redirectToRoute('app_video_show', ['id' => $video->getId()], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_video_index', [], Response::HTTP_SEE_OTHER);
     }
         //Render the video editing form
         return $this->render('video/edit.html.twig', [
             'form' => $form->createView(),
             'video' => $video
         ]);
-    }   
+    }
+
+    //Deleting video 
+    #[Route('/app/admin/videos/{id}/delete', name: 'app_video_delete', methods: ['POST'])]
+    public function delete(Request $request, Video $video, VideoRepository $videoRepository, Filesystem $filesystem): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$video->getId(), $request->request->get('_token'))) {
+            $videoRepository->remove($video, true);
+
+            $videoFile = $video->getVideo();
+            $thumbnailFile = $video->getThumbnail();
+            
+            //Delete video
+            if ($videoFile) {
+                $videoFilePath = $this->getParameter('video_directory') . '/' . $videoFile;
+                if ($filesystem->exists($videoFilePath)) {
+                    $filesystem->remove($videoFilePath);
+                }
+            }
+
+            // Delete thumbnail
+            if ($thumbnailFile) {
+                $thumbnailFilePath = $this->getParameter('thumbnail_directory') . '/' . $thumbnailFile;
+                if ($filesystem->exists($thumbnailFilePath)) {
+                    $filesystem->remove($thumbnailFilePath);
+                }
+            }
+        }
+
+        return $this->redirectToRoute('app_video_index');        
+    }
 }
 
