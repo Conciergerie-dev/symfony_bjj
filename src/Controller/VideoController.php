@@ -5,7 +5,7 @@ namespace App\Controller;
 //2 - Après je passe en paramètre de ces méthodes
 //3 - Après je peux me servir dans me méthodes
 use App\Entity\Video;
-use App\Entity\User;
+use App\Form\SearchFormType;
 use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,11 +20,27 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class VideoController extends AbstractController
 {
-    #[Route('/app', name: 'dashboard', methods: ['GET'])]
-    public function index(VideoRepository $videoRepository): Response
+    #[Route('/app', name: 'dashboard', methods: ['GET', 'POST'])]
+    public function index(Request $request, VideoRepository $videoRepository): Response
     {
+        $form = $this->createForm(SearchFormType::class);
+        $videos = $videoRepository->findAll();
+        $criteria = [
+            'basePosition' => '',
+            'endingPosition' => '',
+        ];
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $criteria = $form->getData();
+            $videos = $videoRepository->search($criteria);
+        }
+
         return $this->render('video/index.html.twig', [
-            'videos' => $videoRepository->findAll(),
+
+            'form' => $form->createView(),
+            'criteria' => $criteria,
+            'videos' => $videos,
         ]);
     }
 
@@ -99,9 +115,9 @@ class VideoController extends AbstractController
     #[Route('/app/saved', name: 'saved_videos', methods: ['GET'])]
     public function showSavedVideos(): Response
     {
-        // $liked = $this->getUser()->getLiked()->toArray();
+        $liked = $this->getUser()->getLiked()->toArray();
         return $this->render('video/index.html.twig', [
-            // 'videos' => $liked,
+            'videos' => $liked,
         ]);
     }
     

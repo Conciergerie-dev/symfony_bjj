@@ -68,6 +68,7 @@ class VideoFormType extends AbstractType
                     'Bottom Closed Guard' => 'Bottom Closed Guard',
                     'Bottom Mount' => 'Bottom Mount',
                     'Bottom Side Control' => 'Bottom Side Control',
+                    'Other' => 'Other',
                 ],
             ])
             ->add('endingPosition', ChoiceType::class, [
@@ -77,6 +78,7 @@ class VideoFormType extends AbstractType
                 'choices'  => [
                     'Submission' => 'Submission',
                     'Defense' => 'Defense',
+                    'Other' => 'Other',
                 ],
             ])
         ;

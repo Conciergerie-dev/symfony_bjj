@@ -39,6 +39,27 @@ class VideoRepository extends ServiceEntityRepository
         }
     }
 
+    public function search($criteria): array
+    {
+        $qb = $this->createQueryBuilder('c');
+        if ($criteria['basePosition'] != "") {
+            $qb->where('c.basePosition = :basePosition')
+            ->setParameter('basePosition', $criteria['basePosition']);
+
+            if ($criteria['endingPosition'] != "") {
+                $qb->andWhere('c.endingPosition = :endingPosition')
+                ->setParameter('endingPosition', $criteria['endingPosition']);
+            }
+        } elseif ($criteria['endingPosition'] != "") {
+            $qb->where('c.endingPosition = :endingPosition')
+            ->setParameter('endingPosition', $criteria['endingPosition']);
+        }
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
 //    /**
 //     * @return Video[] Returns an array of Video objects
 //     */

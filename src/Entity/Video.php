@@ -45,6 +45,22 @@ class Video
         $this->likers = new ArrayCollection();
     }
 
+    public const BASEPOSITION = [
+        'Top Closed Guard',
+        'Top Mount',
+        'Top Side Control',
+        'Bottom Closed Guard',
+        'Bottom Mount',
+        'Bottom Side Control',
+        'Other',
+    ];
+
+    public const ENDINGPOSITION = [
+        'Submission',
+        'Defense',
+        'Other',
+    ];
+
     public function getId(): ?int
     {
         return $this->id;
