@@ -4,6 +4,48 @@
 
 {% block body %}
 <div class="mt-8 mx-8">
+{% if form is defined %}
+  {{ form_start(form) }}
+  <div class="grid grid-cols-3 gap-3 my-8">
+    <div>
+        <label for="basePosition" class="block text-sm font-medium leading-6 text-gray-900">Starting Position</label>
+        <select
+            name="{{ field_name(form.basePosition) }}"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+        >
+            <option value="">All</option>
+        {% for label, value in field_choices(form.basePosition) %}
+            {% if value == criteria['basePosition'] %}
+                <option selected value="{{ value }}">{{ label }}</option>
+            {% else %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endif %}
+        {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="endingPosition" class="block text-sm font-medium leading-6 text-gray-900">Ending Position</label>
+        <select
+            name="{{ field_name(form.endingPosition) }}"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+        >
+            <option value="">All</option>
+        {% for label, value in field_choices(form.endingPosition) %}
+            {% if value == criteria['endingPosition'] %}
+                <option selected value="{{ value }}">{{ label }}</option>
+            {% else %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endif %}
+        {% endfor %}
+        </select>
+    </div>
+    <div>
+      <label for="button" class="block text-sm font-medium leading-6 text-gray-900">&#8203</label>
+      <button type="submit" class="rounded-md float-right bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Search</button>
+    </div>
+  </div>
+  {{ form_end(form) }}
+{% endif %}
   <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
     {% for video in videos %}
     <li class="relative">
