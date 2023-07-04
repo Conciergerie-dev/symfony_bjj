@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Controller;
-//1 - D'abord j'utilise en 'use'
-//2 - Après je passe en paramètre de ces méthodes
-//3 - Après je peux me servir dans me méthodes
+
 use App\Entity\Video;
 use App\Form\SearchFormType;
 use App\Repository\VideoRepository;
