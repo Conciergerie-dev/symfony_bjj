@@ -33,7 +33,7 @@
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.name }}</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.description|length > 120 ? video.description|slice(0, 120) ~ '...' : video.description }}</td>
                                         <td class="whitespace-nowrap px-3 py-4">
-                                            <img src="{{ asset('uploads/thumbnails/' ~ video.thumbnail) }}" alt="Thumbnail" class="w-16 h-auto">
+                                            <img src="{{ asset('uploads/thumbnails/' ~ video.thumbnail) }}" alt="Thumbnail" class="w-20 h-auto rounded-lg">
                                         </td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.basePosition }} to {{ video.endingPosition }}</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.date|date('d/m/Y') }}</td>
