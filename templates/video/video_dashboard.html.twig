@@ -31,7 +31,7 @@
                                 {% for video in videos %}
                                     <tr>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.name }}</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.description|length > 120 ? video.description|slice(0, 120) ~ '...' : video.description }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.description|length > 100 ? video.description|slice(0, 100) ~ '...' : video.description }}</td>
                                         <td class="whitespace-nowrap px-3 py-4">
                                             <img src="{{ asset('uploads/thumbnails/' ~ video.thumbnail) }}" alt="Thumbnail" class="w-16 h-auto">
                                         </td>
