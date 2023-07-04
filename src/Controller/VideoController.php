@@ -1,11 +1,8 @@
 <?php
 
 namespace App\Controller;
-//1 - D'abord j'utilise en 'use'
-//2 - Après je passe en paramètre de ces méthodes
-//3 - Après je peux me servir dans me méthodes
+
 use App\Entity\Video;
-use App\Entity\User;
 use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,8 +14,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Form\VideoFormType;
 use App\Service\FileUploader;
 use Symfony\Component\Filesystem\Filesystem;
-
-
 
 class VideoController extends AbstractController
 {
@@ -105,6 +100,7 @@ class VideoController extends AbstractController
         ]);
     }
     
+    // Dashboard adm
     #[Route('/app/admin/videos', name: 'app_video_index', methods: ['GET'])]
     public function showAdmVideos(VideoRepository $videoRepository): Response
     {   
