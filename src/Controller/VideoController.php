@@ -118,8 +118,25 @@ class VideoController extends AbstractController
             'videos' => $liked,
         ]);
     }
-    
-    // Dashboard adm
+
+    #[Route('/app/saved/{id}', name: 'app_liked_video', methods: ['POST'])]
+    public function saveLikedVideo(Request $request, Video $video, VideoRepository $videoRepository): Response
+    {
+        $video->addLiker($this->getUser());
+        $videoRepository->save($video, true);
+        
+        return $this->redirectToRoute('app_video_show', array('id' => $video->getId()));
+    }
+
+    #[Route('/app/saved/{id}/delete', name: 'app_liked_delete', methods: ['POST'])]
+    public function deleteLikedVideo(Request $request, Video $video, VideoRepository $videoRepository): Response
+    {
+        $video->removeLiker($this->getUser());
+        $videoRepository->save($video, true);
+        
+        return $this->redirectToRoute('app_video_show', array('id' => $video->getId()));
+    }
+
     #[Route('/app/admin/videos', name: 'app_video_index', methods: ['GET'])]
     public function showAdmVideos(VideoRepository $videoRepository): Response
     {   
