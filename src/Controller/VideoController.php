@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Video;
+use App\Form\SearchFormType;
 use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +18,27 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class VideoController extends AbstractController
 {
-    #[Route('/app', name: 'dashboard', methods: ['GET'])]
-    public function index(VideoRepository $videoRepository): Response
+    #[Route('/app', name: 'dashboard', methods: ['GET', 'POST'])]
+    public function index(Request $request, VideoRepository $videoRepository): Response
     {
+        $form = $this->createForm(SearchFormType::class);
+        $videos = $videoRepository->findAll();
+        $criteria = [
+            'basePosition' => '',
+            'endingPosition' => '',
+        ];
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $criteria = $form->getData();
+            $videos = $videoRepository->search($criteria);
+        }
+
         return $this->render('video/index.html.twig', [
-            'videos' => $videoRepository->findAll(),
+
+            'form' => $form->createView(),
+            'criteria' => $criteria,
+            'videos' => $videos,
         ]);
     }
 
@@ -71,6 +88,8 @@ class VideoController extends AbstractController
                 // Save the file name to the database or do any other necessary action              
                 // Logic to handle the case where no file was uploaded
             }
+            $time = date('d-m-Y');
+            $video->setDate(new \DateTime($time));
             $entityManager = $doctrine->getManager();
             $entityManager -> persist($video);
             $entityManager -> flush();
@@ -94,9 +113,9 @@ class VideoController extends AbstractController
     #[Route('/app/saved', name: 'saved_videos', methods: ['GET'])]
     public function showSavedVideos(): Response
     {
-        // $liked = $this->getUser()->getLiked()->toArray();
+        $liked = $this->getUser()->getLiked()->toArray();
         return $this->render('video/index.html.twig', [
-            // 'videos' => $liked,
+            'videos' => $liked,
         ]);
     }
     
@@ -115,7 +134,7 @@ class VideoController extends AbstractController
     FileUploader $fileUploader, FileSystem $filesystem): Response
     {
     $form = $this->createForm(VideoFormType::class, $video);
-    $form->remove('video'); 
+    $form->remove('video');
     $form->handleRequest($request);
 
     // Check that the form has been submitted and is valid
