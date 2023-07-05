@@ -53,4 +53,10 @@ class MainController extends AbstractController
     {
         return $this->render('main/admin.html.twig');
     }
+
+    #[Route('/app/profile/modify-password', name: 'modify_password')]
+    public function modifyPassword(): Response
+    {
+        return $this->render('main/modifyPassword.html.twig');
+    }
 }
