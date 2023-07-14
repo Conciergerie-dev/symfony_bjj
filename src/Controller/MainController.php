@@ -15,7 +15,7 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\SendMailService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-
+use App\Entity\User;
 
 class MainController extends AbstractController
 {
@@ -130,4 +130,36 @@ class MainController extends AbstractController
             'requestPassForm' => $form->createView()
         ]);
     }
+
+    //Creating a new route for a new user
+    #[Route('/new-user', name: 'user_new')]
+        public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+        {   
+            $user = new User();
+            $form = $this->createForm(UserFormType::class, $user);
+            $form->remove('roles'); 
+            $form->remove('belt'); 
+            $form->handleRequest($request);
+            // dd($form);
+            if ($form->isSubmitted() && $form->isValid()) {
+                // encode the plain password
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                
+                $entityManager->persist($user);
+                $entityManager->flush();
+                // do anything else you need here, like send an email
+
+                return $this->redirectToRoute('app_login');
+            }
+
+            return $this->render('registration/new_user.html.twig', [
+                'registrationForm' => $form->createView(),
+                'create' => true,
+            ]);
+        }
 }
