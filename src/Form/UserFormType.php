@@ -40,6 +40,7 @@ class UserFormType extends AbstractType
                 'choices'  => [
                   'User' => 'ROLE_USER',
                   'Admin' => 'ROLE_ADMIN',
+                  'Member' => 'ROLE_MEMBER',
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [

@@ -37,7 +37,13 @@
 											<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.email }}</td>
 											<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.name }}</td>
 											<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.belt }}</td>
-											<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.roles == ["ROLE_ADMIN","ROLE_USER"] ? 'Admin' : 'User' }}</td>
+											{% if user.roles == ["ROLE_ADMIN","ROLE_USER"] %}
+												<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Admin</td>
+											{% elseif user.roles == ["ROLE_MEMBER","ROLE_USER"] %}
+												<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>		
+											{% else %}
+												<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">User</td>
+											{% endif %}									
 											<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
 												<a href="{{ path('app_user_show', {'id': user.id}) }}" class="text-red-600 hover:text-red-900">Show<span class="sr-only">,
 														{{ user.email }}</span>
