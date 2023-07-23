@@ -18,7 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class VideoController extends AbstractController
 {
-    #[Route('/app', name: 'dashboard', methods: ['GET', 'POST'])]
+    #[Route('/app', name: 'dashboard', methods: ['GET', 'POST'])]                   
     public function index(Request $request, VideoRepository $videoRepository): Response
     {
         $form = $this->createForm(SearchFormType::class);
