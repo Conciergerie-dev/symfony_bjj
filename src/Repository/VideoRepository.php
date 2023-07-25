@@ -41,19 +41,30 @@ class VideoRepository extends ServiceEntityRepository
 
     public function search($criteria): array
     {
-        $qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder('v');
         if ($criteria['basePosition'] != "") {
-            $qb->where('c.basePosition = :basePosition')
+            $qb->where('v.basePosition = :basePosition')
             ->setParameter('basePosition', $criteria['basePosition']);
 
             if ($criteria['endingPosition'] != "") {
-                $qb->andWhere('c.endingPosition = :endingPosition')
+                $qb->andWhere('v.endingPosition = :endingPosition')
                 ->setParameter('endingPosition', $criteria['endingPosition']);
             }
         } elseif ($criteria['endingPosition'] != "") {
-            $qb->where('c.endingPosition = :endingPosition')
+            $qb->where('v.endingPosition = :endingPosition')
             ->setParameter('endingPosition', $criteria['endingPosition']);
         }
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
+    public function findOtherVideo(): array
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->where('v.category != :category')
+            ->setParameter('category', 'bjj');
 
         $query = $qb->getQuery();
 
