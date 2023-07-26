@@ -13,7 +13,6 @@ class SearchFormType extends AbstractType
     {
         $builder
         ->add('basePosition', ChoiceType::class, [
-            'label' => 'test',
             'required' => true,
             'multiple' => false,
             'expanded' => false,

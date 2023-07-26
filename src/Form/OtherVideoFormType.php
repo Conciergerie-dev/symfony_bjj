@@ -2,20 +2,33 @@
 
 namespace App\Form;
 
-use App\Entity\SelfDefense;
+use App\Entity\Video;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class SelfDefenseFormType extends AbstractType
+class OtherVideoFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
             ->add('description')
+            ->add('category', ChoiceType::class, [
+                'required' => true,
+                'multiple' => false,
+                'expanded' => false,
+                'choices'  => [
+                    'Nutrition' => 'nutrition',
+                    'Self Defense' => 'selfdefense',
+                    'Conditionning' => 'conditionning',
+                    'Mobility' => 'mobility',
+                    'BJJ Talks' => 'bjjtalks',
+                ],
+            ])
             ->add('thumbnail', FileType::class, [  //C'est pour upload img thumbnail
                 'label' => 'Add New Image',
 
@@ -61,7 +74,7 @@ class SelfDefenseFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => SelfDefense::class,
+            'data_class' => Video::class,
         ]);
     }
 }

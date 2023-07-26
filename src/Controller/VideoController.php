@@ -22,7 +22,7 @@ class VideoController extends AbstractController
     public function index(Request $request, VideoRepository $videoRepository): Response
     {
         $form = $this->createForm(SearchFormType::class);
-        $videos = $videoRepository->findAll();
+        $videos = $videoRepository->findBy(['category' => 'bjj']);
         $criteria = [
             'basePosition' => '',
             'endingPosition' => '',
@@ -90,6 +90,7 @@ class VideoController extends AbstractController
             }
             $time = date('d-m-Y');
             $video->setDate(new \DateTime($time));
+            $video->setCategory('bjj');
             $entityManager = $doctrine->getManager();
             $entityManager -> persist($video);
             $entityManager -> flush();
@@ -141,7 +142,7 @@ class VideoController extends AbstractController
     public function showAdmVideos(VideoRepository $videoRepository): Response
     {   
         return $this->render('video/video_dashboard.html.twig', [
-            'videos' => $videoRepository->findAll(),
+            'videos' => $videoRepository->findBy(['category' => 'bjj']),
         ]);
     }
 
