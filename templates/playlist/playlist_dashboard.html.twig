@@ -18,14 +18,24 @@
 				<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 					<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
 						<div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-							<table class="min-w-full divide-y divide-gray-300"></thead>
-							<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Name</th>
-							<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
-							<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Thumbnail</th>
-							<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Number of videos</th>
-							<th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6"></th>
-							<span class="sr-only">Action</span>
-						</thead>
+							<table class="min-w-full divide-y divide-gray-300">
+							<thead  class="bg-gray-50">
+								<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+									Name
+								</th>
+								<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+									Description
+								</th>
+								<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+									Thumbnail
+								</th>
+								<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+									Number of videos
+								</th>
+								<th scope="col" class="whitespace-nowrap px-3 py-4 pr-8 text-right text-sm font-medium text-gray-900">
+									Actions
+								</th>
+							</thead>
 						<tbody>
 							{% for playlist in playlists %}
 								<tr>
