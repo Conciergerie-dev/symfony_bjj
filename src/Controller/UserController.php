@@ -89,4 +89,5 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_index', ['admin' => 'saved_videos',], Response::HTTP_SEE_OTHER);
     }
+
 }
