@@ -14,54 +14,72 @@
 				<a href="{{ path('add_other_video') }}" class="block rounded-md bg-red-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Add Video</a>
 			</div>
 		</div>
-		<div class="mt-8 flow-root">
-			<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-				<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-					<div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-						<table class="min-w-full divide-y divide-gray-300">
-							<thead class="bg-gray-50">
-									<tr>
-										<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
-											Name
-										</th>
-										<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
-											Description
-										</th>
-										<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
-											Thumbnail
-										</th>
-										<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
-											Category
-										</th>
-										<th scope="col" class="whitespace-nowrap px-3 py-4 pr-8 text-right text-sm font-medium text-gray-900">
-											Actions
-										</th>
-									</tr>
-								</thead>
-							<tbody>
-								{% for otherVideo in otherVideos %}
-									<tr>
-										<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ otherVideo.name }}</td>
-										<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ otherVideo.description|length > 100 ? otherVideo.description|slice(0, 100) ~ '...' : otherVideo.description }}</td>
-										<td class="whitespace-nowrap px-3 py-4">
-											<img src="{{ asset('uploads/thumbnails/' ~ otherVideo.thumbnail) }}" alt="Thumbnail" class="w-20 h-auto rounded-lg">
-										</td>
-										<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ otherVideo.category }}</td>
-										<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-											<a href="{{ path('app_video_show', {'id': otherVideo.id}) }}" class="text-red-600 hover:text-red-900">Show<span class="sr-only">,
-													{{ otherVideo.name }}</span>
-											</a>
-											<a href="{{ path('app_other_video_edit', {'id': otherVideo.id}) }}" class="text-red-600 hover:text-red-900">Edit<span class="sr-only">,
-													{{ otherVideo.name }}</span>
-											</a>
-										</td>
-									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
+			{{ form_start(form) }}
+				<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 my-8">
+					<label for="basePosition" class="block text-sm font-medium leading-6 text-gray-900">
+						Search
+					</label>
+					<select name="{{ field_name(form.category) }}"class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6">
+					<option value="">All</option>
+						{% for label, value in field_choices(form.category) %}
+							{% set selected = form.category.vars.value == value ? 'selected' : '' %}
+        					<option value="{{ value }}" {{ selected }}>{{ label }}</option>
+						{% endfor %}
+					</select>
+					<div class="flex items-end justify-end">
+						<button type="submit" class="rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mr-1">
+							Search
+						</button>
 					</div>
+				</div>
+			{{ form_end(form) }}
+	<div class="mt-8 flow-root">
+		<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+			<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+				<div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+					<table class="min-w-full divide-y divide-gray-300">
+						<thead class="bg-gray-50">
+							<tr>
+								<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
+									Name
+								</th>
+								<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
+									Description
+								</th>
+								<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
+									Thumbnail
+								</th>
+								<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
+									Category
+								</th>
+								<th scope="col" class="whitespace-nowrap px-3 py-4 pr-8 text-right text-sm font-medium text-gray-900">
+									Actions
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for otherVideo in otherVideos %}
+								<tr>
+									<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ otherVideo.name }}</td>
+									<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ otherVideo.description|length > 100 ? otherVideo.description|slice(0, 100) ~ '...' : otherVideo.description }}</td>
+									<td class="whitespace-nowrap px-3 py-4">
+										<img src="{{ asset('uploads/thumbnails/' ~ otherVideo.thumbnail) }}" alt="Thumbnail" class="w-20 h-auto rounded-lg">
+									</td>
+									<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ otherVideo.category }}</td>
+									<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+										<a href="{{ path('app_video_show', {'id': otherVideo.id}) }}" class="text-red-600 hover:text-red-900">Show<span class="sr-only">,
+												{{ otherVideo.name }}</span>
+										</a>
+										<a href="{{ path('app_other_video_edit', {'id': otherVideo.id}) }}" class="text-red-600 hover:text-red-900">Edit<span class="sr-only">,
+												{{ otherVideo.name }}</span>
+										</a>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
 	</div>
-{% endblock %}
+</div>{% endblock %}
