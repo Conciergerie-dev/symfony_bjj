@@ -18,7 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class VideoController extends AbstractController
 {
-    #[Route('/app', name: 'dashboard', methods: ['GET', 'POST'])]                   
+    #[Route('/app', name: 'dashboard', methods: ['GET', 'POST'])]
     public function index(Request $request, VideoRepository $videoRepository): Response
     {
         $form = $this->createForm(SearchFormType::class);
@@ -29,7 +29,7 @@ class VideoController extends AbstractController
         ];
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $criteria = $form->getData();
             $videos = $videoRepository->search($criteria);
         }
@@ -44,13 +44,13 @@ class VideoController extends AbstractController
 
     // Adding videos - 'thumbnail/video'
     #[Route('/app/admin/videos/new', name: 'add_video', methods: ['GET', 'POST'])]
-    public function addVideo(Request $request, PersistenceManagerRegistry $doctrine, SluggerInterface $slugger, FileUploader $fileUploader ): Response
+    public function addVideo(Request $request, PersistenceManagerRegistry $doctrine, SluggerInterface $slugger, FileUploader $fileUploader): Response
     {
         $video = new Video(); //new instance
         $form = $this->createForm(VideoFormType::class, $video); //j'ai appelé le form que vien du VideoFormType
-               
+
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $thumbnailFile = $form->get('thumbnail')->getData();
 
             // this condition is needed because the 'brochure' field is not required
@@ -70,7 +70,7 @@ class VideoController extends AbstractController
                 $originalFilename = pathinfo($videoFile->getClientOriginalName(), PATHINFO_FILENAME);
                 // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$videoFile->guessExtension();
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $videoFile->guessExtension();
                 // Move the file to the destination directory
                 try {
                     $videoFile->move(
@@ -92,12 +92,12 @@ class VideoController extends AbstractController
             $video->setDate(new \DateTime($time));
             $video->setCategory('bjj');
             $entityManager = $doctrine->getManager();
-            $entityManager -> persist($video);
-            $entityManager -> flush();
+            $entityManager->persist($video);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_video_index');
         }
-        return $this->render('video/add.html.twig',[
+        return $this->render('video/add.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -125,7 +125,7 @@ class VideoController extends AbstractController
     {
         $video->addLiker($this->getUser());
         $videoRepository->save($video, true);
-        
+
         return $this->redirectToRoute('app_video_show', array('id' => $video->getId()));
     }
 
@@ -134,13 +134,13 @@ class VideoController extends AbstractController
     {
         $video->removeLiker($this->getUser());
         $videoRepository->save($video, true);
-        
+
         return $this->redirectToRoute('app_video_show', array('id' => $video->getId()));
     }
 
     #[Route('/app/admin/videos', name: 'app_video_index', methods: ['GET'])]
     public function showAdmVideos(VideoRepository $videoRepository): Response
-    {   
+    {
         return $this->render('video/video_dashboard.html.twig', [
             'videos' => $videoRepository->findBy(['category' => 'bjj']),
         ]);
@@ -148,34 +148,38 @@ class VideoController extends AbstractController
 
     // Editing a video
     #[Route('/app/admin/videos/{id}/edit', name: 'app_video_edit', methods: ['POST', 'GET'])]
-    public function edit(Request $request, Video $video, VideoRepository $videoRepository, 
-    FileUploader $fileUploader, FileSystem $filesystem): Response
-    {
-    $form = $this->createForm(VideoFormType::class, $video);
-    $form->remove('video');
-    $form->handleRequest($request);
+    public function edit(
+        Request $request,
+        Video $video,
+        VideoRepository $videoRepository,
+        FileUploader $fileUploader,
+        FileSystem $filesystem
+    ): Response {
+        $form = $this->createForm(VideoFormType::class, $video);
+        $form->remove('video');
+        $form->handleRequest($request);
 
-    // Check that the form has been submitted and is valid
-    if ($form->isSubmitted() && $form->isValid()) {   
-        $thumbnailFile = $form->get('thumbnail')->getData();
+        // Check that the form has been submitted and is valid
+        if ($form->isSubmitted() && $form->isValid()) {
+            $thumbnailFile = $form->get('thumbnail')->getData();
 
-        // this condition is needed because the 'brochure' field is not required
-        // so the PDF file must be processed only when a file is uploaded
-        if ($thumbnailFile) {
-            $newFilename = $fileUploader->upload($thumbnailFile);
-            $filesystem->remove($this->getParameter('thumbnail_directory').'/'.$video->getThumbnail());
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($thumbnailFile) {
+                $newFilename = $fileUploader->upload($thumbnailFile);
+                $filesystem->remove($this->getParameter('thumbnail_directory') . '/' . $video->getThumbnail());
 
-            // updates the 'brochureFilename' property to store the PDF file name
-            // instead of its contents
-            // ça viens du set de ma entity(video.php)
-            $video->setThumbnail($newFilename);
-        }   
-        // Save changes to the video
-        $videoRepository->save($video, true);
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                // ça viens du set de ma entity(video.php)
+                $video->setThumbnail($newFilename);
+            }
+            // Save changes to the video
+            $videoRepository->save($video, true);
 
-        // Redirects to video list page
-        return $this->redirectToRoute('app_video_index', [], Response::HTTP_SEE_OTHER);
-    }
+            // Redirects to video list page
+            return $this->redirectToRoute('app_video_index', [], Response::HTTP_SEE_OTHER);
+        }
         //Render the video editing form
         return $this->render('video/edit.html.twig', [
             'form' => $form->createView(),
@@ -187,12 +191,12 @@ class VideoController extends AbstractController
     #[Route('/app/admin/videos/{id}/delete', name: 'app_video_delete', methods: ['POST'])]
     public function delete(Request $request, Video $video, VideoRepository $videoRepository, Filesystem $filesystem): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$video->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $video->getId(), $request->request->get('_token'))) {
             $videoRepository->remove($video, true);
 
             $videoFile = $video->getVideo();
             $thumbnailFile = $video->getThumbnail();
-            
+
             //Delete video
             if ($videoFile) {
                 $videoFilePath = $this->getParameter('video_directory') . '/' . $videoFile;
@@ -210,7 +214,7 @@ class VideoController extends AbstractController
             }
         }
 
-        return $this->redirectToRoute('app_video_index');        
+        return $this->redirectToRoute('app_video_index');
     }
-}
 
+}

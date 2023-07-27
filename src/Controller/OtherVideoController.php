@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-
+use App\Form\OtherVideoSearchFormType;
 
 class OtherVideoController extends AbstractController
 {
@@ -74,11 +74,22 @@ class OtherVideoController extends AbstractController
     }
 
     // Displaying video
-    #[Route('/app/admin/other', name: 'app_other_video_index', methods: ['GET'])]
-    public function showOtherVideo(VideoRepository $videoRepository): Response
+    #[Route('/app/admin/other', name: 'app_other_video_index', methods: ['GET', 'POST'])]
+    public function showOtherVideo(Request $request, VideoRepository $videoRepository): Response
     {
+        $form = $this->createForm(OtherVideoSearchFormType::class);
+        $video = $videoRepository->findOtherVideo();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $category = $data->getCategory();
+            $video = $videoRepository->findBy(['category' => $category]);
+        }
+      
         return $this->render('other_video/other_video_dashboard.html.twig', [
-            'otherVideos' => $videoRepository->findOtherVideo(),
+            'form' => $form->createView(),
+            'otherVideos' => $video,
         ]);
     }
 
