@@ -84,9 +84,11 @@ class OtherVideoController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $category = $data->getCategory();
-            $video = $videoRepository->findBy(['category' => $category]);
+            if($category != ""){
+                $video = $videoRepository->findBy(['category' => $category]);
+            }
         }
-      
+              
         return $this->render('other_video/other_video_dashboard.html.twig', [
             'form' => $form->createView(),
             'otherVideos' => $video,

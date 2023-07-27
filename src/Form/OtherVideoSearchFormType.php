@@ -18,11 +18,11 @@ class OtherVideoSearchFormType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'choices'  => [
-                    'Nutrition' => 'nutrition',
-                    'Self Defense' => 'selfdefense',
-                    'Conditionning' => 'conditionning',
-                    'Mobility' => 'mobility',
-                    'BJJ Talks' => 'bjjtalks',
+                    'Nutrition' => 'Nutrition',
+                    'Self Defense' => 'Self Defense',
+                    'Conditionning' => 'Conditionning',
+                    'Mobility' => 'Mobility',
+                    'BJJ Talks' => 'BJJ Talks',
                 ],
             ])
         ;
