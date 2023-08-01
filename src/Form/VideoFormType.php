@@ -9,7 +9,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 class VideoFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -17,6 +20,20 @@ class VideoFormType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
+            ->add('instructor', EntityType::class, [
+                'class' => User::class,
+                'query_builder' => function (EntityRepository $er): QueryBuilder {
+                    return $er->createQueryBuilder('u')
+                    ->where('u.roles LIKE :admin')
+                    ->setParameter('admin', '%"'.'ROLE_ADMIN'.'"%')
+                    ->orWhere('u.roles LIKE :instructor')
+                    ->setParameter('instructor', '%"'.'ROLE_INSTRUCTOR'.'"%');
+                },
+                // uses the User.username property as the visible option string
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+            ])
             ->add('thumbnail', FileType::class, [  //C'est pour upload img thumbnail
                 'label' => 'Add New Image',
 

@@ -41,6 +41,7 @@ class UserFormType extends AbstractType
                   'User' => 'ROLE_USER',
                   'Admin' => 'ROLE_ADMIN',
                   'Member' => 'ROLE_MEMBER',
+                  'Instructor' => 'ROLE_INSTRUCTOR'
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [

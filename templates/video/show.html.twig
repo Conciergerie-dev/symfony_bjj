@@ -33,6 +33,9 @@
                     </form>
                     {% endif %}
                 </div>
+                {% if video.instructor %}
+                    <p class="pointer-events-none mt-2 block text-sm font-medium text-gray-900">By instructor: {{ video.instructor.name }}</p>
+                {% endif %}
                 <p class="text-gray-600">{{ video.description }}</p>
             </div>
         </div>

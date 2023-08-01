@@ -43,6 +43,9 @@ class Video
     #[ORM\Column(length: 255)]
     private ?string $category = null;
 
+    #[ORM\ManyToOne(inversedBy: 'videos')]
+    private ?User $instructor = null;
+
     public function __construct()
     {
         $this->likers = new ArrayCollection();
@@ -199,4 +202,15 @@ class Video
         return $this;
     }
 
+    public function getInstructor(): ?User
+    {
+        return $this->instructor;
+    }
+
+    public function setInstructor(?User $instructor): self
+    {
+        $this->instructor = $instructor;
+
+        return $this;
+    }
 }
