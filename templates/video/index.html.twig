@@ -54,6 +54,9 @@
           </a>
         </div>
         <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">{{ video.name }}</p>
+        {% if video.instructor %}
+          <p class="pointer-events-none mt-2 block text-sm font-medium text-gray-900">By instructor: {{ video.instructor.name }}</p>
+        {% endif %}
         <p class="pointer-events-none block text-sm font-medium text-gray-500">{{ video.description|length > 120 ? video.description|slice(0, 120) ~ '...' : video.description }}</p>
       </li>
       {% endfor %}

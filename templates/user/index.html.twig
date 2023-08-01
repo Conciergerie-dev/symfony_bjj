@@ -49,6 +49,8 @@
 												<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Admin</td>
 											{% elseif user.roles == ["ROLE_MEMBER","ROLE_USER"] %}
 												<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>		
+											{% elseif user.roles == ["ROLE_INSTRUCTOR","ROLE_USER"] %}
+												<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Instructor</td>
 											{% else %}
 												<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">User</td>
 											{% endif %}									
