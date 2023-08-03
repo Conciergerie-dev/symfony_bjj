@@ -238,4 +238,15 @@ class VideoController extends AbstractController
 
         return $this->redirectToRoute('app_video_index');
     }
+
+     // Free Content
+     #[Route('/app/freecontent', name: 'app_free_content_show', methods: ['GET'])]
+     public function showFreeContent(VideoRepository $videoRepository): Response
+     {
+        $freeVideos = $videoRepository->findBy(['free' => true]);
+        
+         return $this->render('free_content/free_content_dashboard.html.twig', [
+            'videos' => $freeVideos,
+         ]);
+     }
 }

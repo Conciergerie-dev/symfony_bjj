@@ -46,6 +46,9 @@ class Video
     #[ORM\ManyToOne(inversedBy: 'videos')]
     private ?User $instructor = null;
 
+    #[ORM\Column]
+    private ?bool $free = null;
+
     public function __construct()
     {
         $this->likers = new ArrayCollection();
@@ -213,4 +216,17 @@ class Video
 
         return $this;
     }
+
+    public function isFree(): ?bool
+    {
+        return $this->free;
+    }
+
+    public function setFree(bool $free): self
+    {
+        $this->free = $free;
+
+        return $this;
+    }
+
 }
