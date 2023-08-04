@@ -21,25 +21,33 @@ class VideoController extends AbstractController
     #[Route('/app', name: 'dashboard', methods: ['GET', 'POST'])]
     public function index(Request $request, VideoRepository $videoRepository): Response
     {
-        $form = $this->createForm(SearchFormType::class);
-        $videos = $videoRepository->findBy(['category' => 'bjj']);
-        $criteria = [
-            'basePosition' => '',
-            'endingPosition' => '',
-        ];
+        if(in_array("ROLE_MEMBER", $this->getUser()->getRoles())){
+            $form = $this->createForm(SearchFormType::class);
+                $videos = $videoRepository->findBy(['category' => 'bjj']);
+                $criteria = [
+                'basePosition' => '',
+                'endingPosition' => '',
+            ];
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $criteria = $form->getData();
-            $videos = $videoRepository->search($criteria);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $criteria = $form->getData();
+                $videos = $videoRepository->search($criteria);
+            }
+
+            return $this->render('video/index.html.twig', [
+
+                'form' => $form->createView(),
+                'criteria' => $criteria,
+                'videos' => $videos,
+            ]);
+        } else {
+            $freeVideos = $videoRepository->findBy(['free' => true]);
+        
+            return $this->render('free_content/free_content_dashboard.html.twig', [
+               'videos' => $freeVideos,
+            ]);
         }
-
-        return $this->render('video/index.html.twig', [
-
-            'form' => $form->createView(),
-            'criteria' => $criteria,
-            'videos' => $videos,
-        ]);
     }
 
     // Adding videos - 'thumbnail/video'
@@ -111,7 +119,10 @@ class VideoController extends AbstractController
     // Displaying video
     #[Route('/app/videos/{id}', name: 'app_video_show', methods: ['GET'])]
     public function show(Video $video): Response
-    {
+    {   
+        if(!$video->isFree() && !in_array("ROLE_MEMBER", $this->getUser()->getRoles())){
+            return $this->redirectToRoute('dashboard');
+        }
         return $this->render('video/show.html.twig', [
             'video' => $video,
         ]);

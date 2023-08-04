@@ -36,9 +36,11 @@ security:
         - { path: ^/app/admin/user, roles: ROLE_ADMIN }
         - { path: ^/app/admin/playlists, roles: ROLE_ADMIN }
         - { path: ^/app/admin/other, roles: ROLE_ADMIN }
-        - { path: ^/app/admin, roles: ROLE_INSTRUCTOR }  
-        - { path: ^/app/profile, roles: ROLE_USER }
-        - { path: ^/app, roles: ROLE_MEMBER }
+        - { path: ^/app/admin, roles: ROLE_INSTRUCTOR }
+        - { path: ^/app/playlist, roles: ROLE_MEMBER }
+        - { path: ^/app/saved, roles: ROLE_MEMBER }
+        - { path: ^/app/other-video, roles: ROLE_MEMBER }
+        - { path: ^/app, roles: ROLE_USER }
     role_hierarchy:
         ROLE_ADMIN:       [ROLE_MEMBER, ROLE_INSTRUCTOR]
         ROLE_INSTRUCTOR:  ROLE_MEMBER

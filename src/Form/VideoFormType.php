@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 class VideoFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -33,6 +34,10 @@ class VideoFormType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+            ])
+            ->add('free', CheckboxType::class, [
+                'label'    => 'free content',
+                'required' => false,
             ])
             ->add('thumbnail', FileType::class, [  //C'est pour upload img thumbnail
                 'label' => 'Add New Image',

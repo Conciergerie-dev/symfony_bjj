@@ -55,6 +55,8 @@
 							<!-- Current: "border-red-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
 							{% if is_granted('IS_AUTHENTICATED') %}
 								<a href="{{ path('dashboard') }}" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Videos</a>
+							{% endif %}
+							{% if is_granted('ROLE_MEMBER') %}
 								<a href="{{ path('app_playlist') }}" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Playlists</a>
 								<a href="{{ path('saved_videos') }}" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">My favorites</a>
 								<a href="{{ path('app_other_video') }}" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Other Videos</a>
