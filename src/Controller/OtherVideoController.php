@@ -18,7 +18,7 @@ use App\Form\OtherVideoSearchFormType;
 
 class OtherVideoController extends AbstractController
 {
-    #[Route('/other/video', name: 'app_other_video')]
+    #[Route('/app/other-video', name: 'app_other_video')]
     public function index(VideoRepository $videoRepository): Response
     {
         $videos = $videoRepository->findOtherVideo();
