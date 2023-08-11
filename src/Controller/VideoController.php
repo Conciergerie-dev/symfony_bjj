@@ -21,7 +21,7 @@ class VideoController extends AbstractController
     #[Route('/app', name: 'dashboard', methods: ['GET', 'POST'])]
     public function index(Request $request, VideoRepository $videoRepository): Response
     {
-        if(in_array("ROLE_MEMBER", $this->getUser()->getRoles())){
+        if($this->isGranted('ROLE_MEMBER')){
             $form = $this->createForm(SearchFormType::class);
                 $videos = $videoRepository->findBy(['category' => 'bjj']);
                 $criteria = [
@@ -57,7 +57,7 @@ class VideoController extends AbstractController
         $video = new Video(); //new instance
         $form = $this->createForm(VideoFormType::class, $video); //j'ai appelé le form que vien du VideoFormType
 
-        if(!in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+        if(!$this->isGranted('ROLE_ADMIN')) {
             $form->remove('instructor');
         }
         $form->handleRequest($request);
@@ -102,7 +102,7 @@ class VideoController extends AbstractController
             $time = date('d-m-Y');
             $video->setDate(new \DateTime($time));
             $video->setCategory('bjj');
-            if(!in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+            if(!$this->isGranted('ROLE_ADMIN')) {
                 $video->setInstructor($this->getUser());
             }
             $entityManager = $doctrine->getManager();
@@ -120,7 +120,7 @@ class VideoController extends AbstractController
     #[Route('/app/videos/{id}', name: 'app_video_show', methods: ['GET'])]
     public function show(Video $video): Response
     {   
-        if(!$video->isFree() && !in_array("ROLE_MEMBER", $this->getUser()->getRoles())){
+        if(!$video->isFree() && !$this->isGranted('ROLE_MEMBER')){
             return $this->redirectToRoute('dashboard');
         }
         return $this->render('video/show.html.twig', [
@@ -159,7 +159,7 @@ class VideoController extends AbstractController
     public function showAdmVideos(VideoRepository $videoRepository): Response
     {   
         $user = $this->getUser();
-        if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+        if($this->isGranted('ROLE_ADMIN')) {
             $videos = $videoRepository->findBy(['category' => 'bjj']);
         } else {
             $videos = $videoRepository->findBy([
@@ -181,11 +181,11 @@ class VideoController extends AbstractController
         FileUploader $fileUploader,
         FileSystem $filesystem
     ): Response {
-        if(in_array("ROLE_ADMIN", $this->getUser()->getRoles()) or $this->getUser() == $video->getInstructor()){
+        if($this->isGranted('ROLE_ADMIN') or $this->getUser() == $video->getInstructor()){
 
             $form = $this->createForm(VideoFormType::class, $video);
             $form->remove('video');
-            if(!in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+            if(!$this->isGranted('ROLE_ADMIN')) {
                 $form->remove('instructor');
             }
             $form->handleRequest($request);
