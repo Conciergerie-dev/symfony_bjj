@@ -8,7 +8,7 @@ when@dev:
             main:
                 type: rotating_file
                 # path: "%kernel.logs_dir%/%kernel.environment%.log"
-                path: "%kernel.project_dir%/storage/logs/"
+                path: "%kernel.project_dir%/storage/logs/%kernel.environment%.log"
                 level: debug
                 max_files: 10
                 channels: ["!event"]
