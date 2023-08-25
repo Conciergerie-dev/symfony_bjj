@@ -10,6 +10,7 @@
 /var/
 /vendor/
 /migrations/
+/storage/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
