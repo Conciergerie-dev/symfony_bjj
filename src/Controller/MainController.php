@@ -83,7 +83,7 @@ class MainController extends AbstractController
         ]);
     }
 
-    //Fogort password
+    //Forgot password
     #[Route('/app/profile/forgotten-password', name: 'forgotten_password', methods: ['GET', 'POST'])]
     public function forgotPassword(Request $request, UserRepository $usersRepository, TokenGeneratorInterface $tokenGenerator, EntityManagerInterface $entityManager, SendMailService $mail): Response
     {
