@@ -7,7 +7,7 @@
     <div class="px-4 sm:px-6 lg:px-8">
         <div class="sm:flex sm:items-center">
 			<div class="sm:flex-auto">
-				<h1 class="text-base font-semibold leading-6 text-gray-900">Videos</h1>
+				<h1 class="text-base font-semibold leading-6 text-gray-900">Techniques</h1>
 				<p class="mt-2 text-sm text-gray-700">Your videos.</p>
 			</div>
 			<div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -43,6 +43,7 @@
                                 </th>
                             </thead>
                             <tbody>
+                                <ul>
                                 {% for video in videos %}
                                     <tr>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.name }}</td>
@@ -65,6 +66,7 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
+                                <ul>
                             </tbody>
                         </table>
                     </div>
