@@ -43,7 +43,7 @@
 								<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
 									Name
 								</th>
-								<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
+								<th scope="col" class="hidden md:block whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
 									Description
 								</th>
 								<th scope="col" class="whitespace-nowrap px-3 py-4 text-left text-sm font-medium text-gray-900">
@@ -61,7 +61,7 @@
 							{% for otherVideo in otherVideos %}
 								<tr>
 									<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ otherVideo.name }}</td>
-									<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ otherVideo.description|length > 100 ? otherVideo.description|slice(0, 100) ~ '...' : otherVideo.description }}</td>
+									<td class="hidden md:block whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ otherVideo.description|length > 100 ? otherVideo.description|slice(0, 100) ~ '...' : otherVideo.description }}</td>
 									<td class="whitespace-nowrap px-3 py-4">
 										<img src="{{ asset('uploads/thumbnails/' ~ otherVideo.thumbnail) }}" alt="Thumbnail" class="w-20 h-auto rounded-lg">
 									</td>
