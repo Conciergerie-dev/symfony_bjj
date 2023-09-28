@@ -33,6 +33,15 @@
             {{ form_widget(form.thumbnail, {'attr': {'class': 'block w-full'}}) }}
           </dd>
         </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+					<dt class="text-sm font-medium leading-6 text-gray-900">Free Content</dt>
+					<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+						<label class="inline-flex items-center">
+            				{{ form_widget(form.free, {'attr': {'class': 'form-checkbox h-4 w-4 text-red-600'}}) }}
+            				<span class="ml-2">Mark as Free</span>
+       					</label>
+					</dd>
+				</div>
       </dl>
       <div class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
           <button type="submit" class="rounded-md bg-red-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Confirm</button>
