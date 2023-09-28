@@ -29,6 +29,10 @@ class OtherVideoFormType extends AbstractType
                     'BJJ Talks' => 'BJJ Talks',
                 ],
             ])
+            ->add('free', CheckboxType::class, [
+                'label'    => 'free content',
+                'required' => false,
+            ])
             ->add('thumbnail', FileType::class, [  //C'est pour upload img thumbnail
                 'label' => 'Add New Image',
 

@@ -35,20 +35,6 @@ class VideoFormType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
             ])
-            /*->add('instructor', EntityType::class, [
-                'class' => User::class,
-                'query_builder' => function (EntityRepository $er): QueryBuilder {
-                    return $er->createQueryBuilder('u')
-                    ->where('JSON_CONTAINS(u.roles, :admin) = 1')
-                    ->setParameter('admin', '%"'.'ROLE_ADMIN'.'"%')
-                    ->orWhere('JSON_CONTAINS(u.roles, :instructor) = 1')
-                    ->setParameter('instructor', '%"'.'ROLE_INSTRUCTOR'.'"%');
-                },
-                // uses the User.username property as the visible option string
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-            ])*/
             ->add('free', CheckboxType::class, [
                 'label'    => 'free content',
                 'required' => false,
