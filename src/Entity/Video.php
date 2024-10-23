@@ -49,9 +49,13 @@ class Video
     #[ORM\Column]
     private ?bool $free = null;
 
+    #[ORM\ManyToMany(targetEntity: Lesson::class, mappedBy: 'videos')]
+    private Collection $lessons;
+
     public function __construct()
     {
         $this->likers = new ArrayCollection();
+        $this->lessons = new ArrayCollection();
     }
 
     public const BASEPOSITION = [
@@ -225,6 +229,33 @@ class Video
     public function setFree(bool $free): self
     {
         $this->free = $free;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Lesson>
+     */
+    public function getLessons(): Collection
+    {
+        return $this->lessons;
+    }
+
+    public function addLesson(Lesson $lesson): static
+    {
+        if (!$this->lessons->contains($lesson)) {
+            $this->lessons->add($lesson);
+            $lesson->addVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLesson(Lesson $lesson): static
+    {
+        if ($this->lessons->removeElement($lesson)) {
+            $lesson->removeVideo($this);
+        }
 
         return $this;
     }
