@@ -43,6 +43,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: Video::class)]
     private Collection $videos;
+
+    #[ORM\ManyToMany(targetEntity: Lesson::class, mappedBy: 'users')]
+    private Collection $lessons;
      
   
 
@@ -50,6 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->liked = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->lessons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,6 +199,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($video->getInstructor() === $this) {
                 $video->setInstructor(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Lesson>
+     */
+    public function getLessons(): Collection
+    {
+        return $this->lessons;
+    }
+
+    public function addLesson(Lesson $lesson): static
+    {
+        if (!$this->lessons->contains($lesson)) {
+            $this->lessons->add($lesson);
+            $lesson->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLesson(Lesson $lesson): static
+    {
+        if ($this->lessons->removeElement($lesson)) {
+            $lesson->removeUser($this);
         }
 
         return $this;
