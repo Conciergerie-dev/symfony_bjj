@@ -27,11 +27,13 @@ class LessonFormType extends AbstractType
                 'class' => User::class,
                 'choice_label' => 'name',
                 'multiple' => true,
+                'required' => false,
             ])
             ->add('videos', EntityType::class, [
                 'class' => Video::class,
                 'choice_label' => 'name',
                 'multiple' => true,
+                'required' => false,
             ])
         ;
     }
