@@ -16,7 +16,7 @@ class Lesson
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'lessons')]
