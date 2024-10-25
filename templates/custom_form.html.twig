@@ -6,7 +6,7 @@
 {%- endblock form_row -%}
 
 {%- block widget_attributes -%}
-    {%- set attr = attr|merge({ class: attr.class|default(widget_class|default('mt-1 w-full')) ~ (disabled ? ' ' ~ widget_disabled_class|default('border-gray-300 text-gray-500')) ~ (errors|length ? ' ' ~ widget_errors_class|default('border-red-700')) }) -%}
+    {%- set attr = attr|merge({ class: attr.class|default(widget_class|default('mt-1 w-full')) ~ (disabled ? ' ' ~ widget_disabled_class|default('border-gray-300 text-gray-500')) ~ (errors|length ? ' ' ~ widget_errors_class|default('border-blue-700')) }) -%}
     {{- parent() -}}
 {%- endblock widget_attributes -%}
 
@@ -24,7 +24,7 @@
     {%- if errors|length > 0 -%}
         <ul>
             {%- for error in errors -%}
-                <li class="{{ error_item_class|default('text-red-700') }}">{{ error.message }}</li>
+                <li class="{{ error_item_class|default('text-blue-700') }}">{{ error.message }}</li>
             {%- endfor -%}
         </ul>
     {%- endif -%}
@@ -70,7 +70,7 @@
 
 <!--TODO : Customize inputs to have them rounded and gray 
 {%- block widget -%}
-    {%- set widget_class = widget_class|default('block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-400 sm:text-sm sm:leading-6') -%}
+    {%- set widget_class = widget_class|default('block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-400 sm:text-sm sm:leading-6') -%}
     {{- parent() -}}
 {%- endblock widget -%}
 
