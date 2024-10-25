@@ -18,7 +18,7 @@ use App\Form\PlaylistFormType;
 class PlaylistController extends AbstractController
 {   
     //The index will be for users
-    #[Route('/app/playlist', name: 'app_playlist')]
+    #[Route('/app/playlists', name: 'app_playlist')]
     public function index(PlaylistRepository $playlistRepository): Response
     {   
         return $this->render('playlist/index.html.twig', [
@@ -37,7 +37,7 @@ class PlaylistController extends AbstractController
     }
 
      // Displaying the playlist
-     #[Route('/app/playlist/{id}', name: 'app_playlist_show', methods: ['GET'])]
+     #[Route('/app/playlists/{id}', name: 'app_playlist_show', methods: ['GET'])]
      public function show(Playlist $playlist): Response
      {  
          return $this->render('playlist/show.html.twig', [
@@ -51,17 +51,12 @@ class PlaylistController extends AbstractController
     {
         $playlist = new Playlist(); //new instance
         $form = $this->createForm(PlaylistFormType::class, $playlist);
-        // $form->remove('videos'); 
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $thumbnailFile = $form->get('thumbnail')->getData();
             if ($thumbnailFile) {
                 $newFilename = $fileUploader->upload($thumbnailFile);
-
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
-                // ça viens du set de ma entity(video.php)
                 $playlist->setThumbnail($newFilename);
             }
         
@@ -108,30 +103,29 @@ class PlaylistController extends AbstractController
         return $this->render('playlist/edit.html.twig', [
             'form' => $form->createView(),
             'playlist' => $playlist
-        ]);
-           
+        ]);  
     }
     
      //Deleting playlist 
-     #[Route('/app/admin/playlists/{id}/delete', name: 'app_playlist_delete', methods: ['POST'])]
-     public function delete(Request $request, Playlist $playlist, PlaylistRepository $playlistRepository, Filesystem $filesystem): Response
-     {
-         if ($this->isCsrfTokenValid('delete'.$playlist->getId(), $request->request->get('_token'))) {
-             $playlistRepository->remove($playlist, true);
-           
-             $thumbnailFile = $playlist->getThumbnail();
-              
-             // Delete thumbnail
-             if ($thumbnailFile) {
-                 $thumbnailFilePath = $this->getParameter('thumbnail_directory') . '/' . $thumbnailFile;
-                 if ($filesystem->exists($thumbnailFilePath)) {
-                     $filesystem->remove($thumbnailFilePath);
-                 }
-             }
-         }
- 
-         return $this->redirectToRoute('app_playlist_index');        
-     }
+    #[Route('/app/admin/playlists/{id}/delete', name: 'app_playlist_delete', methods: ['POST'])]
+    public function delete(Request $request, Playlist $playlist, PlaylistRepository $playlistRepository, Filesystem $filesystem): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$playlist->getId(), $request->request->get('_token'))) {
+            $playlistRepository->remove($playlist, true);
+        
+            $thumbnailFile = $playlist->getThumbnail();
+            
+            // Delete thumbnail
+            if ($thumbnailFile) {
+                $thumbnailFilePath = $this->getParameter('thumbnail_directory') . '/' . $thumbnailFile;
+                if ($filesystem->exists($thumbnailFilePath)) {
+                    $filesystem->remove($thumbnailFilePath);
+                }
+            }
+        }
+
+        return $this->redirectToRoute('app_playlist_index');        
+    }
 
 
 }

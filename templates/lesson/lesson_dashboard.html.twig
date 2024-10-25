@@ -1,0 +1,66 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Lessons Dashboard
+{% endblock %}
+
+{% block body %}
+    <div class="px-4 sm:px-6 lg:px-8">
+        <div class="sm:flex sm:items-center">
+			<div class="sm:flex-auto">
+				<h1 class="text-base font-semibold leading-6 text-gray-900">Lessons</h1>
+				<p class="mt-2 text-sm text-gray-700">Your lessons.</p>
+			</div>
+			<div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+				<a href="{{ path('add_lesson') }}" class="block rounded-md bg-red-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Add Lesson</a>
+			</div>
+		</div>
+		<div class="mt-8 flow-root">
+			<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+				<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+				    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-300">
+							<thead class="bg-gray-50">
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                    Date
+                                </th>
+                                <th scope="col" class="hidden md:block px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                    Time
+                                </th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                    Videos
+                                </th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                    Students
+                                </th>
+                                <th scope="col" class="px-3 py-3.5 pr-8 text-right text-sm font-semibold text-gray-900">
+                                    Actions
+                                </th>
+                            </thead>
+                            <tbody>
+                                <ul>
+                                {% for lesson in lessons %}
+                                    <tr>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ lesson.date|date('d/m/Y') }}</td>
+                                        <td class="hidden md:block whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ lesson.time|date('H:i') }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ lesson.videos|length }}</td>    
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ lesson.users|length }}</td>
+                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                            <a href="{{ path('app_lesson_show', {'id': lesson.id}) }}" class="text-red-600 hover:text-red-900">Show<span class="sr-only">,
+                                                    {{ lesson.date|date('d/m/Y') }}</span>
+                                            </a>
+                                            <a href="{{ path('app_lesson_edit', {'id': lesson.id}) }}" class="text-red-600 hover:text-red-900">Edit<span class="sr-only">,
+                                                    {{ lesson.date|date('d/m/Y') }}</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <ul>
+                            </tbody>
+                        </table>
+                    </div>
+			    </div>
+		    </div>
+	    </div>
+    </div>
+{% endblock %}
+
