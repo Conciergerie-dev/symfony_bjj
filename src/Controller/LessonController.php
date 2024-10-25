@@ -13,12 +13,36 @@ use Symfony\Component\HttpFoundation\Request;
 
 class LessonController extends AbstractController
 {
-    #[Route('/lessons', name: 'app_lesson')]
-    public function index(): Response
+    #[Route('/app/lessons', name: 'app_lesson')]
+    public function index(LessonRepository $lessonRepository): Response
     {
+        $user = $this->getUser();
+        $nextLessons = $lessonRepository->findUpcomingLessons();
+        $pastLessons = $lessonRepository->findPastLessonsByUser($user);
+
         return $this->render('lesson/index.html.twig', [
-            'controller_name' => 'LessonController',
+            'user' => $user,
+            'nextLessons' => $nextLessons,
+            'pastLessons' => $pastLessons
         ]);
+    }
+
+    #[Route('/app/lessons/{id}/join', name: 'app_lesson_join', methods: ['POST'])]
+    public function joinLesson(Request $request, Lesson $lesson, LessonRepository $lessonRepository): Response
+    {
+        $lesson->addUser($this->getUser());
+        $lessonRepository->save($lesson, true);
+
+        return $this->redirectToRoute('app_lesson');
+    }
+
+    #[Route('/app/lessons/{id}/leave', name: 'app_lesson_leave', methods: ['POST'])]
+    public function leaveLesson(Request $request, Lesson $lesson, LessonRepository $lessonRepository): Response
+    {
+        $lesson->removeUser($this->getUser());
+        $lessonRepository->save($lesson, true);
+
+        return $this->redirectToRoute('app_lesson');
     }
 
     #[Route('/app/admin/lessons/new', name: 'add_lesson', methods: ['GET', 'POST'])]
@@ -49,7 +73,6 @@ class LessonController extends AbstractController
     #[Route('/app/admin/lessons', name: 'app_lesson_index', methods: ['GET'])]
     public function showAdmLessons(LessonRepository $lessonRepository): Response
     {   
-        $user = $this->getUser();
         if($this->isGranted('ROLE_ADMIN')) {
             $lessons = $lessonRepository->findAll();
         }
@@ -61,9 +84,9 @@ class LessonController extends AbstractController
     #[Route('/app/lessons/{id}', name: 'app_lesson_show', methods: ['GET'])]
      public function show(Lesson $lesson): Response
      {  
-         return $this->render('lesson/show.html.twig', [
-             'lesson' => $lesson,
-         ]);
+        return $this->render('lesson/show.html.twig', [
+            'lesson' => $lesson,
+        ]);
      }
 
      #[Route('/app/admin/lessons/{id}/edit', name: 'app_lesson_edit', methods: ['POST', 'GET'])]

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Lesson;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -28,6 +29,45 @@ class LessonRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function save(Lesson $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function findUpcomingLessons(): array
+    {
+        $today = new \DateTime('today midnight');
+        $twoWeeksLater = (clone $today)->modify('+2 weeks');
+
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.date >= :today')
+            ->andWhere('l.date <= :twoWeeksLater')
+            ->setParameter('today', $today)
+            ->setParameter('twoWeeksLater', $twoWeeksLater)
+            ->orderBy('l.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findPastLessonsByUser(User $user): array
+    {
+        $today = new \DateTime('today midnight'); // Start of today
+
+        return $this->createQueryBuilder('l')
+            ->innerJoin('l.users', 'u')            // Join with the User entity
+            ->andWhere('u.id = :userId')           // Filter by user ID
+            ->andWhere('l.date < :today')          // Only past lessons
+            ->setParameter('userId', $user->getId())
+            ->setParameter('today', $today)
+            ->orderBy('l.date', 'DESC')            // Order by date descending
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

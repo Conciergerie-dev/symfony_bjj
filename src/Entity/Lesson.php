@@ -110,4 +110,9 @@ class Lesson
 
         return $this;
     }
+
+    public function hasUser(User $user): bool
+    {
+        return $this->users->contains($user);
+    }
 }

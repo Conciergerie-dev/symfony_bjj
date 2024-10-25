@@ -3,6 +3,7 @@
 	<head>
 			<meta charset="UTF-8">
 			<title>{% block title %}Welcome!{% endblock %}</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<link rel="icon" href="{{ asset('img/favicon.ico') }}"/>
 			{% block stylesheets %}
 				{{ encore_entry_link_tags('app') }}
@@ -54,6 +55,7 @@
 							{% endif %}
 							{% if is_granted('ROLE_MEMBER') %}
 								<a href="{{ path('app_playlist') }}" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-md font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Playlists</a>
+								<a href="{{ path('app_lesson') }}" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-md font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">My Lessons</a>
 								<a href="{{ path('saved_videos') }}" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-md font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">My favorites</a>
 								<a href="{{ path('app_other_video') }}" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-md font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Other Videos</a>
 							{% endif %}
@@ -100,6 +102,7 @@
 						<a href="{{ path('dashboard') }}" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Techniques</a>
 						{% if is_granted('ROLE_MEMBER') %}
 							<a href="{{ path('app_playlist') }}" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Playlists</a>
+							<a href="{{ path('app_lesson') }}" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">My lessons</a>
 							<a href="{{ path('saved_videos') }}" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">My favorites</a>
 							<a href="{{ path('app_other_video') }}" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Other Videos</a>
 						{% endif %}
