@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use App\Service\PositionChoices;
 
 class SearchFormType extends AbstractType
 {
@@ -16,25 +17,13 @@ class SearchFormType extends AbstractType
             'required' => true,
             'multiple' => false,
             'expanded' => false,
-            'choices'  => [
-                'Top Closed Guard' => 'Top Closed Guard',
-                'Top Mount' => 'Top Mount',
-                'Top Side Control' => 'Top Side Control',
-                'Bottom Closed Guard' => 'Bottom Closed Guard',
-                'Bottom Mount' => 'Bottom Mount',
-                'Bottom Side Control' => 'Bottom Side Control',
-                'Other' => 'Other',
-            ],
+            'choices'  => PositionChoices::getBasePositions(),
         ])
         ->add('endingPosition', ChoiceType::class, [
             'required' => true,
             'multiple' => false,
             'expanded' => false,
-            'choices'  => [
-                'Submission' => 'Submission',
-                'Defense' => 'Defense',
-                'Other' => 'Other',
-            ],
+            'choices'  => PositionChoices::getEndingPositions(),
         ])
         ;
     }
