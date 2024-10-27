@@ -14,6 +14,8 @@ use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use App\Service\PositionChoices;
+
 class VideoFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -30,7 +32,6 @@ class VideoFormType extends AbstractType
                     ->orWhere('u.roles LIKE :instructor')
                     ->setParameter('instructor', '%"'.'ROLE_INSTRUCTOR'.'"%');
                 },
-                // uses the User.username property as the visible option string
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
@@ -39,18 +40,10 @@ class VideoFormType extends AbstractType
                 'label'    => 'free content',
                 'required' => false,
             ])
-            ->add('thumbnail', FileType::class, [  //C'est pour upload img thumbnail
+            ->add('thumbnail', FileType::class, [
                 'label' => 'Add New Image',
-
-                // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
                 'required' => false,
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
                         'maxSize' => '10240k',
@@ -82,27 +75,14 @@ class VideoFormType extends AbstractType
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
-                'choices'  => [
-                    'Top Closed Guard' => 'Top Closed Guard',
-                    'Top Mount' => 'Top Mount',
-                    'Top Side Control' => 'Top Side Control',
-                    'Bottom Closed Guard' => 'Bottom Closed Guard',
-                    'Bottom Mount' => 'Bottom Mount',
-                    'Bottom Side Control' => 'Bottom Side Control',
-                    'Other' => 'Other',
-                ],
+                'choices'  => PositionChoices::getBasePositions(),
             ])
             ->add('endingPosition', ChoiceType::class, [
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
-                'choices'  => [
-                    'Submission' => 'Submission',
-                    'Defense' => 'Defense',
-                    'Other' => 'Other',
-                ],
-            ])
-        ;
+                'choices'  => PositionChoices::getEndingPositions(),
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

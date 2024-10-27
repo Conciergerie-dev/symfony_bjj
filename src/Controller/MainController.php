@@ -15,6 +15,7 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\SendMailService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Form\ResetPasswordRequestFormType;
 use App\Entity\User;
 
 class MainController extends AbstractController
