@@ -5,7 +5,12 @@ module.exports = {
     "./templates/**/*.html.twig",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        title: ['Archivo', 'sans-serif'],
+        body: ['Roboto Mono', 'sans-serif'],
+      },
+    },
   },
   corePlugins: {
     aspectRatio: false,
