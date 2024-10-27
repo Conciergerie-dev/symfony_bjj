@@ -13,59 +13,59 @@
 			<div class="grid grid-cols-1 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-4 gap-y-8">
 				<article class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
 					<img src="{{ asset('img/videos.jpeg')}}" alt="" class="pointer-events-none object-cover group-hover:opacity-75">
-					<div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
-					<div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
-					<h3 class="mt-3 text-lg font-semibold leading-6 text-white">
-						<a href="{{ path('app_video_index') }}">
-							<span class="absolute inset-0"></span>
-							Techniques
-						</a>
-					</h3>
+					<div class="absolute bottom-0 w-full bg-gradient-to-t from-black/70 via-black/40 p-4">
+						<h3 class="mt-3 text-lg font-semibold leading-6 text-white">
+							<a href="{{ path('app_video_index') }}">
+								<span class="absolute inset-0"></span>
+								Techniques
+							</a>
+						</h3>
+					</div>
 				</article>
 				{% if is_granted('ROLE_ADMIN') %}
 					<article class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
 						<img src="{{ asset('img/users.png')}}" alt="" class="pointer-events-none object-cover group-hover:opacity-75">
-						<div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
-						<div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
-						<h3 class="mt-3 text-lg font-semibold leading-6 text-white">
-							<a href="{{ path('app_user_index') }}">
-								<span class="absolute inset-0"></span>
-								Users
-							</a>
-						</h3>
+						<div class="absolute bottom-0 w-full bg-gradient-to-t from-black/70 via-black/40 p-4">
+							<h3 class="mt-3 text-lg font-semibold leading-6 text-white">
+								<a href="{{ path('app_user_index') }}">
+									<span class="absolute inset-0"></span>
+									Users
+								</a>
+							</h3>
+						</div>
 					</article>
 					<article class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
 						<img src="{{ asset('img/self.jpeg')}}" alt="" class="pointer-events-none object-cover group-hover:opacity-75">
-						<div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
-						<div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
-						<h3 class="mt-3 text-lg font-semibold leading-6 text-white">
-							<a href="{{ path('app_lesson_index') }}">
-								<span class="absolute inset-0"></span>
-								Lessons
-							</a>
-						</h3>
+						<div class="absolute bottom-0 w-full bg-gradient-to-t from-black/70 via-black/40 p-4">
+							<h3 class="mt-3 text-lg font-semibold leading-6 text-white">
+								<a href="{{ path('app_lesson_index') }}">
+									<span class="absolute inset-0"></span>
+									Lessons
+								</a>
+							</h3>
+						</div>
 					</article>
 					<article class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
 						<img src="{{ asset('img/playlists.jpeg')}}" alt="" class="pointer-events-none object-cover group-hover:opacity-75">
-						<div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
-						<div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
-						<h3 class="mt-3 text-lg font-semibold leading-6 text-white">
-							<a href="{{ path('app_playlist_index') }}">
-								<span class="absolute inset-0"></span>
-								Playlists
-							</a>
-						</h3>
+						<div class="absolute bottom-0 w-full bg-gradient-to-t from-black/70 via-black/40 p-4">
+							<h3 class="mt-3 text-lg font-semibold leading-6 text-white">
+								<a href="{{ path('app_playlist_index') }}">
+									<span class="absolute inset-0"></span>
+									Playlists
+								</a>
+							</h3>
+						</div>
 					</article>
 					<article class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
 						<img src="{{ asset('img/self.jpeg')}}" alt="" class="pointer-events-none object-cover group-hover:opacity-75">
-						<div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
-						<div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
-						<h3 class="mt-3 text-lg font-semibold leading-6 text-white">
-							<a href="{{ path('app_other_video_index') }}">
-								<span class="absolute inset-0"></span>
-								Other Videos
-							</a>
-						</h3>
+						<div class="absolute bottom-0 w-full bg-gradient-to-t from-black/70 via-black/40 p-4">
+							<h3 class="mt-3 text-lg font-semibold leading-6 text-white">
+								<a href="{{ path('app_other_video_index') }}">
+									<span class="absolute inset-0"></span>
+									Other Videos
+								</a>
+							</h3>
+						</div>
 					</article>
 				{% endif %}
 			</div>
