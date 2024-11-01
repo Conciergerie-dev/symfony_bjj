@@ -42,16 +42,21 @@ class VideoRepository extends ServiceEntityRepository
     public function search($criteria): array
     {
         $qb = $this->createQueryBuilder('v');
-        if ($criteria['basePosition'] != "") {
-            $qb->where('v.basePosition = :basePosition')
+        
+        // Ensure that category is always 'bjj'
+        $qb->where('v.category = :category')
+        ->setParameter('category', 'bjj');
+        
+        if (!empty($criteria['basePosition'])) {
+            $qb->andWhere('v.basePosition = :basePosition')
             ->setParameter('basePosition', $criteria['basePosition']);
 
-            if ($criteria['endingPosition'] != "") {
+            if (!empty($criteria['endingPosition'])) {
                 $qb->andWhere('v.endingPosition = :endingPosition')
                 ->setParameter('endingPosition', $criteria['endingPosition']);
             }
-        } elseif ($criteria['endingPosition'] != "") {
-            $qb->where('v.endingPosition = :endingPosition')
+        } elseif (!empty($criteria['endingPosition'])) {
+            $qb->andWhere('v.endingPosition = :endingPosition')
             ->setParameter('endingPosition', $criteria['endingPosition']);
         }
 
