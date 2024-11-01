@@ -38,5 +38,3 @@ And in another terminal, you can run this npm command to build webpack
 ```
 
 The project is now available on your localhost:8000
-
-PS: You need to create a user and give him an admin role to access the app, you should then deactivate the limitations in security.yaml to be able to register (don't forget to put it back to normal once it's made)

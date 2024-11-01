@@ -43,7 +43,7 @@ class VideoFormType extends AbstractType
             ->add('thumbnail', FileType::class, [
                 'label' => 'Add New Image',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '10240k',
@@ -58,7 +58,7 @@ class VideoFormType extends AbstractType
             ->add('video', FileType::class, [
                 'label' => 'Add New Video',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '800M',

@@ -38,14 +38,16 @@ class MainController extends AbstractController
     {
         $user = $this->security->getUser();
         $form = $this->createForm(UserFormType::class, $user);
+        $userBelt = $user->getBelt();
         $form->remove('roles'); 
         $form->remove('plainPassword');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setBelt($userBelt);
             $userRepository->save($user, true);
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('dashboard', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('registration/register.html.twig', [

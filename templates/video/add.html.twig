@@ -9,76 +9,98 @@
 		<div class="mt-6 border-t border-gray-100">
 			{{ form_start(form) }}
 			<dl class="divide-y divide-gray-100">
+
 				<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 					<dt class="text-sm font-medium leading-6 text-gray-900">Name</dt>
 					<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-						{{ form_widget(form.name,{'attr': {'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6'}}) }}
+						{{ form_widget(form.name, {'attr': {'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6'}}) }}
+						{% if form_errors(form.name) %}
+							<div class="text-red-600 text-sm mt-1">{{ form_errors(form.name) }}</div>
+						{% endif %}
 					</dd>
 				</div>
+
 				<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 					<dt class="text-sm font-medium leading-6 text-gray-900">Description</dt>
 					<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
 						{{ form_widget(form.description, {'attr': {'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6'}}) }}
+						{% if form_errors(form.description) %}
+							<div class="text-red-600 text-sm mt-1">{{ form_errors(form.description) }}</div>
+						{% endif %}
 					</dd>
 				</div>
+
 				<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 					<dt class="text-sm font-medium leading-6 text-gray-900">Thumbnail</dt>
 					<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
 						{{ form_widget(form.thumbnail, {'attr': {'class': 'block w-full'}}) }}
+						{% if form_errors(form.thumbnail) %}
+							<div class="text-red-600 text-sm mt-1">{{ form_errors(form.thumbnail) }}</div>
+						{% endif %}
 					</dd>
 				</div>
+
 				<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 					<dt class="text-sm font-medium leading-6 text-gray-900">Video</dt>
 					<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
 						{{ form_widget(form.video, {'attr': {'class': 'block w-full'}}) }}
+						{% if form_errors(form.video) %}
+							<div class="text-red-600 text-sm mt-1">{{ form_errors(form.video) }}</div>
+						{% endif %}
 					</dd>
 				</div>
+
 				<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 					<dt class="text-sm font-medium leading-6 text-gray-900">Starting position</dt>
 					<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-						<select name="{{ field_name(form.basePosition) }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6">
-							{% for label, value in field_choices(form.basePosition) %}
-								<option value="{{ value }}">{{ label }}</option>
-							{% endfor %}
-						</select>
+						{{ form_widget(form.basePosition, {'attr': {'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6'}}) }}
+						{% if form_errors(form.basePosition) %}
+							<div class="text-red-600 text-sm mt-1">{{ form_errors(form.basePosition) }}</div>
+						{% endif %}
 					</dd>
 				</div>
+
 				<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 					<dt class="text-sm font-medium leading-6 text-gray-900">Ending position</dt>
 					<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-						<select name="{{ field_name(form.endingPosition) }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6">
-							{% for label, value in field_choices(form.endingPosition) %}
-								<option value="{{ value }}">{{ label }}</option>
-							{% endfor %}
-						</select>
+						{{ form_widget(form.endingPosition, {'attr': {'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6'}}) }}
+						{% if form_errors(form.endingPosition) %}
+							<div class="text-red-600 text-sm mt-1">{{ form_errors(form.endingPosition) }}</div>
+						{% endif %}
 					</dd>
 				</div>
+
 				{% if form.instructor is defined %}
-                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt class="text-sm font-medium leading-6 text-gray-900">Instructor</dt>
-                    <dd <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                        <select name="{{ field_name(form.instructor) }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6">
-                            {% for label, value in field_choices(form.instructor) %}	
-                                <option selected value="{{ value }}">{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                    </dd>
-                </div>
+				<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+					<dt class="text-sm font-medium leading-6 text-gray-900">Instructor</dt>
+					<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+						{{ form_widget(form.instructor, {'attr': {'class': 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6'}}) }}
+						{% if form_errors(form.instructor) %}
+							<div class="text-red-600 text-sm mt-1">{{ form_errors(form.instructor) }}</div>
+						{% endif %}
+					</dd>
+				</div>
 				{% endif %}
+
 				<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
 					<dt class="text-sm font-medium leading-6 text-gray-900">Free Content</dt>
 					<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
 						<label class="inline-flex items-center">
-            				{{ form_widget(form.free, {'attr': {'class': 'form-checkbox h-4 w-4 text-blue-950'}}) }}
-            				<span class="ml-2">Mark as Free</span>
-       					</label>
+							{{ form_widget(form.free, {'attr': {'class': 'form-checkbox h-4 w-4 text-blue-950'}}) }}
+							<span class="ml-2">Mark as Free</span>
+						</label>
+						{% if form_errors(form.free) %}
+							<div class="text-red-600 text-sm mt-1">{{ form_errors(form.free) }}</div>
+						{% endif %}
 					</dd>
 				</div>
 			</dl>
+
 			<div class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
 				{{ include('video/_form.html.twig') }}
 				<a href="{{ path('app_video_index') }}" class="rounded-md bg-blue-950 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-950 mr-4">Back to list</a>
 			</div>
+
 			{{ form_end(form) }}
 		</div>
 	</div>
