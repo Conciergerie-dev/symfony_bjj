@@ -61,7 +61,7 @@ class VideoFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '50M',
+                        'maxSize' => '800M',
                         'mimeTypes' => [
                             'video/mp4',
                             'video/mpeg',

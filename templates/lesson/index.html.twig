@@ -33,6 +33,7 @@
   </li>
 {% endfor %}
 </ul>
+{% if pastLessons|length > 0  %}
 <div class="sm:flex sm:items-center mt-8">
   <div class="sm:flex-auto">
     <h1 class="text-base font-semibold leading-6 text-gray-900">My previous lessons</h1>
@@ -76,4 +77,5 @@
     </div>
   </div>
 </div>
+{% endif %}
 {% endblock %}
