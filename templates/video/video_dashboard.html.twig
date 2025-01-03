@@ -35,6 +35,9 @@
                                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                                     >Date
                                 </th>
+                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                                    >Type
+                                </th>
                                 <th scope="col" class="px-3 py-3.5 pr-8 text-right text-sm font-semibold text-gray-900">
                                     Actions
                                 </th>
@@ -52,6 +55,7 @@
                                             {{ video.endingPosition }}</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.instructor.name }}</td>    
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.date|date('d/m/Y') }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ video.free ? 'Free' : 'Paid' }}</td>
                                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                             <a href="{{ path('app_video_show', {'id': video.id}) }}" class="text-blue-950 hover:text-blue-900">Show<span class="sr-only">,
                                                     {{ video.name }}</span>
